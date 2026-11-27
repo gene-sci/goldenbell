@@ -78,6 +78,19 @@ code{background:#e9e1d1;padding:1px 5px;border-radius:5px;font-size:12px}
 .cb-quick{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;flex:none}.cb-quick button{padding:5px 8px;border-radius:10px;background:#fff;border:2px solid var(--ink);font-size:12px;font-weight:800}
 .cb-in{display:flex;gap:5px;margin-top:6px;flex:none}.cb-in .sbtn{white-space:nowrap}.cb-in .inp{padding:8px 10px;font-size:14px}
 body.phone #chatBox{left:6px;right:6px;width:auto;bottom:6px;height:52vh;z-index:46}
+body.oxq #emoteBar,body.oxq #seatBtn{display:none}
+#oxBar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:12;display:flex;flex-direction:column;align-items:center;gap:6px}
+.ox-tip{background:rgba(30,27,24,.85);color:#fff;font-weight:800;font-size:14px;border-radius:999px;padding:5px 14px}
+.ox-row{display:flex;gap:14px}
+.oxb{width:96px;height:96px;border-radius:24px;font-size:52px;border:4px solid var(--ink);box-shadow:0 6px 0 var(--ink);background:#fff}
+.oxb.o{background:#dbeafe}.oxb.x{background:#fee2e2}.oxb.on{transform:translateY(4px);box-shadow:0 2px 0 var(--ink);outline:5px solid var(--gold)}
+.oxb:disabled{opacity:.45;filter:grayscale(.6)}
+body.phone .oxb{width:84px;height:84px;font-size:44px}
+.gc .oxc{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;font-size:64px;background:#fff;border:1px solid #ddd;border-radius:8px}
+.gc .pred{font-size:11px;background:#ede9fe;color:#6d28d9;border-radius:6px;padding:0 5px;font-weight:800}
+#acStat{font-size:14px;font-weight:800;color:#3f362e;margin-top:4px}
+.stat-row{display:grid;grid-template-columns:44px 1fr 120px;gap:8px;align-items:center;font-size:13px;padding:4px 0;border-bottom:1px solid #eee}
+.stat-row .bar{height:12px;background:#eee;border-radius:6px;overflow:hidden}.stat-row .bar i{display:block;height:100%;background:var(--ok)}
 #tools{position:fixed;right:10px;top:38%;z-index:9;display:flex;flex-direction:column;gap:8px}
 #tools .iconbtn.on{background:var(--gold)}
 #qbar{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:11;width:max-content;max-width:min(860px,calc(100% - 20px));display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:18px;padding:10px 14px;border:3px solid var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.35)}
@@ -269,6 +282,8 @@ select.inp{font-size:15px;padding:9px}
     <div id="formT" hidden>
       <label class="f">방 코드 (학생들에게 알려 줄 숫자 4자리)</label><input id="inRoomT" class="inp code" inputmode="numeric" maxlength="4">
       <label class="f">교사 비밀번호</label><input id="inPw" class="inp" type="password" placeholder="비밀번호">
+      <label class="f">게임 종류</label>
+      <div class="seg" id="gameSegJ"><button data-g="bell" class="on">🔔 골든벨<small>강당 · 손글씨 답판 · 교사 채점</small></button><button data-g="ox">⭕❌ OX 퀴즈<small>농구장 · O/X로 이동 · 자동 채점</small></button></div>
       <label class="f">게임 방식 (나중에 바꿀 수 있어요)</label>
       <div class="seg" id="modeSegJ"><button data-m="elim">🔔 탈락형<small>틀리면 응원단으로!</small></button><button data-m="score" class="on">💯 점수형<small>모두 끝까지, 점수·시간으로 순위</small></button></div>
       <div class="jgrid" style="margin-top:6px"><div id="lookSlotT"></div><div id="pvSlotT"></div></div>
@@ -299,12 +314,17 @@ select.inp{font-size:15px;padding:9px}
   <div class="rbox out" id="rOutBox"><h4>📣 응원단 <b id="rOutN">0</b></h4><div class="rlist" id="rOut"></div></div>
 </div>
 <div id="qbar" hidden><span id="qbNum">Q1</span><span id="qbText"></span><span id="qbTime"></span></div>
-<div id="ansCard" hidden><div class="ac-a">✅ 정답 <b id="acAns"></b></div><div class="ac-e" id="acExpl"></div></div>
+<div id="ansCard" hidden><div class="ac-a">✅ 정답 <b id="acAns"></b></div><div class="ac-e" id="acExpl"></div><div id="acStat"></div></div>
 <div class="chip" id="hint" hidden>방향키·WASD·바닥 클릭: 이동 · 드래그: 시점 회전 · 휠: 확대 · 🎥: 시점 바꾸기 · 숫자 1~8: 동작</div>
 <div id="toast"></div>
 <div id="notice" hidden><small>📢 선생님 공지</small><span id="noticeTx"></span></div>
 <div id="emoteBar" hidden></div>
 <button id="floatBtn" hidden></button>
+<div id="oxBar" hidden>
+  <div class="ox-tip" id="oxTip">⭕ 또는 ❌ 쪽으로 가요!</div>
+  <div class="ox-row"><button class="oxb o" data-ox="O">⭕</button><button class="oxb x" data-ox="X">❌</button></div>
+  <div class="ox-row" id="oxThrow" hidden><button class="sbtn light" data-throw="O">🎈 ⭕쪽에 던지기</button><button class="sbtn light" data-throw="X">🎈 ❌쪽에 던지기</button></div>
+</div>
 <div id="joy"><div class="knob"></div></div>
 <button id="seatBtn" class="chip" hidden>🪑 내 자리로</button>
 
@@ -342,7 +362,7 @@ select.inp{font-size:15px;padding:9px}
 <div id="zoom" class="modal" hidden><img id="zoomImg" alt=""></div>
 <div id="cmodal" class="modal" hidden><div class="cm-card"><div class="cm-ico" id="cmIco"></div><h3 id="cmTitle"></h3><p id="cmMsg"></p><div class="cm-btns" id="cmBtns"></div></div></div>
 <div id="bye" class="modal" hidden><div class="cm-card"><div class="cm-ico">👋</div><h3>선생님이 방을 닫았어요</h3><p>오늘도 수고했어요! 잠시 후 첫 화면으로 돌아가요.</p></div></div>
-<div id="rank" class="modal" hidden><div class="cm-card"><div class="cm-ico">🏆</div><h3 id="rankTitle">최종 순위</h3><p id="rankSub"></p><div class="rkt" id="rankTeam"></div><div class="rk" id="rankList"></div><div class="cm-btns"><button class="sbtn gold" id="rankClose">닫기</button></div></div></div>
+<div id="rank" class="modal" hidden><div class="cm-card"><div class="cm-ico">🏆</div><h3 id="rankTitle">최종 순위</h3><p id="rankSub"></p><div class="rkt" id="rankTeam"></div><div class="rk" id="rankList"></div><div class="cm-btns"><button class="sbtn light" id="photoBtn">📸 기념사진</button><button class="sbtn gold" id="rankClose">닫기</button></div></div></div>
 
 <div id="teamPick" class="modal" hidden><div class="cm-card"><div class="cm-ico">👥</div><h3>내 모둠을 골라요</h3><p>모둠 대항전이 시작됐어요. 같은 모둠 친구들의 평균 점수로 겨뤄요.</p><div class="teamGrid" id="teamGrid"></div></div></div>
 <div id="lookModal" hidden><div class="lm-card"><div class="lm-top"><b>👩‍🏫 무대 위 내 캐릭터</b><button class="sbtn" id="lookClose">완료</button></div><div id="pvSlotM"></div><div id="lookSlotM"></div></div></div>
@@ -378,16 +398,18 @@ select.inp{font-size:15px;padding:9px}
       <section data-p="write" hidden>
         <h2>✍️ 문제 내기</h2><div class="desc">문제를 쓰고 [문제 내기]를 누르면 바로 시작해요. 학생은 화이트보드에 손글씨·그림으로 답을 쓰고, 선생님이 보드를 보며 채점해요. 정답은 채점을 확정할 때 공개돼요.</div>
         <label class="f">① 문제</label><textarea id="wQ" class="inp" rows="3" placeholder="예) 단열 팽창할 때 기체의 온도는? (증가 / 감소 / 일정)"></textarea>
-        <label class="f">② 정답 (채점할 때 참고 · 채점 확정 뒤 학생에게 공개)</label><input id="wA" class="inp" placeholder="예) 감소">
+        <div id="wAbox"><label class="f">② 정답 (채점할 때 참고 · 채점 확정 뒤 학생에게 공개)</label><input id="wA" class="inp" placeholder="예) 감소"></div>
+        <div id="wOXbox" hidden><label class="f">② 정답 (OX 퀴즈는 자동으로 채점해요)</label><div class="seg" id="wOX" style="max-width:300px"><button data-a="O">⭕ 맞다</button><button data-a="X">❌ 틀리다</button></div></div>
         <label class="f">③ 해설 (선택 · 채점 후 전광판에 표시)</label><input id="wE" class="inp">
         <label class="f">④ 제한시간</label><div class="subtabs" id="wTime"></div>
         <label class="f">⑤ 그림 (선택 · 전광판과 학생 답판 위에 보여요)</label><div class="imgpick"><input type="file" id="wImg" accept="image/*"><img id="wImgPv" hidden alt=""><button class="sbtn light" id="wImgDel" hidden>그림 빼기</button></div>
         <label class="row" style="margin-top:8px;font-size:13px"><input type="checkbox" id="wSave"> 문제 세트에도 저장하기 → <select id="wSet" class="inp" style="width:auto;padding:5px"></select></label>
+        <label class="row" style="font-size:13px"><input type="checkbox" id="wGold"> ⭐ 황금 문제로 내기 (맞히면 2점)</label>
         <button class="big" id="wGo">📝 문제 내기</button>
       </section>
       <section data-p="bank" hidden>
         <h2>📚 문제 은행</h2><div class="desc">문제 옆 [▶ 출제]를 누르면 바로 시작해요. 이미 낸 문제는 흐리게 보여요. 문제 세트는 ➕ 문제 세트 메뉴에서 만들어요.</div>
-        <div class="subtabs"><span id="bankTabs" style="display:contents"></span><span style="flex:1"></span><button id="hideAns">🙈 정답 가리기</button></div>
+        <div class="subtabs"><span id="bankTabs" style="display:contents"></span><span style="flex:1"></span><label style="font-size:13px;font-weight:800;display:flex;align-items:center;gap:4px"><input type="checkbox" id="bankGold"> ⭐ 황금 문제로</label><button id="hideAns">🙈 정답 가리기</button></div>
         <div class="qlist" id="qlist"></div>
       </section>
       <section data-p="mine" hidden>
@@ -408,6 +430,8 @@ select.inp{font-size:15px;padding:9px}
       </section>
       <section data-p="play" hidden>
         <h2>🎮 진행 · 공지</h2><div class="desc">문제마다 공개·채점은 화면 아래 진행 바에서 해요.</div>
+        <h4 class="sec">게임 종류</h4>
+        <div class="seg" id="gameSeg"><button data-g="bell">🔔 골든벨<small>강당 · 손글씨 답판</small></button><button data-g="ox">⭕❌ OX 퀴즈<small>농구장 · 자동 채점</small></button></div>
         <h4 class="sec">게임 방식</h4>
         <div class="seg" id="modeSeg"><button data-m="elim">🔔 탈락형<small>틀리면 응원단으로</small></button><button data-m="score">💯 점수형<small>맞히면 +1점</small></button></div>
         <div class="stats4"><div><b id="sOn">0</b>접속</div><div><b id="sAlive">0</b>도전 중</div><div><b id="sQn">0</b>문제 번호</div><div><b id="sPh">대기</b>지금 단계</div></div>
@@ -422,6 +446,8 @@ select.inp{font-size:15px;padding:9px}
         </div>
         <h4 class="sec">📢 공지 보내기</h4>
         <div class="row"><input id="nTx" class="inp" style="flex:1" maxlength="60" placeholder="예) 다음 문제는 그림 문제예요!"><button class="sbtn" id="nGo">보내기</button></div>
+        <h4 class="sec">📊 문제별 결과</h4>
+        <div id="statList" class="log" style="max-height:220px"></div>
         <h4 class="sec">📜 진행 기록</h4>
         <div class="log" id="log"><div style="color:#a39584">아직 기록이 없어요</div></div>
       </section>
@@ -443,6 +469,12 @@ select.inp{font-size:15px;padding:9px}
         <div class="setItem"><div><b>🎨 강당 분위기</b><small>낮에는 밝은 하늘, 저녁에는 노을과 따뜻한 조명</small></div><div class="subtabs" id="themeSeg" style="margin:0"><button data-th="day">☀️ 낮</button><button data-th="evening">🌇 저녁</button></div></div>
         <div class="setItem"><div><b>👥 모둠 대항전</b><small>학생이 모둠을 골라 들어오고, 모둠 평균 점수(같으면 평균 시간)로 순위를 매겨요</small></div><div class="subtabs" id="teamSeg" style="margin:0"></div></div>
         <div class="setItem"><div><b>🃏 찬스 카드</b><small>게임마다 한 장씩: ✌️ 2배(맞히면 2점) · 🛡 방패(틀려도 탈락 안 함, 탈락형만) · 💡 보기 지우기(보기 문제만). 한 문제에 한 장만 써요</small></div><button class="tg" id="tgCards"></button></div>
+        <div class="setItem"><div><b>🔮 응원석 예측전</b><small>탈락형에서 탈락한 학생도 계속 답을 내고, 2번 맞히면 부활해요 (골든벨·OX 모두)</small></div><button class="tg" id="tgPredict"></button></div>
+        <h4 class="sec">⭕❌ OX 퀴즈 설정</h4>
+        <div class="setItem"><div><b>🧊 얼음! (마지막 3초 이동 금지)</b><small>남은 3초가 되면 모두 그 자리에 얼어붙어요</small></div><button class="tg" id="tgFreeze"></button></div>
+        <div class="setItem"><div><b>🔀 문제마다 ⭕/❌ 자리 바꾸기</b><small>코트의 ⭕ 쪽과 ❌ 쪽이 무작위로 바뀌어서 문제를 끝까지 읽어야 해요</small></div><button class="tg" id="tgFlip"></button></div>
+        <div class="setItem"><div><b>👀 ⭕/❌ 인원 보여 주기</b><small>문제 시간에 전광판에 양쪽 인원이 실시간으로 나와요 (눈치 싸움)</small></div><button class="tg" id="tgOxCount"></button></div>
+        <div class="setItem"><div><b>🏀 보너스 슛</b><small>정답 공개 뒤 맞힌 학생 중 3명이 슛! 들어가면 +1점</small></div><button class="tg" id="tgShots"></button></div>
         <div class="setItem"><div><b>🎵 배경음악</b><small>문제 시간엔 긴박한 음악, 쉬는 시간엔 잔잔한 음악</small></div><button class="tg on" id="tgBgm"></button></div>
         <div class="setItem"><div><b>🤖 테스트 봇</b><small>가짜 학생을 넣어 미리 연습해요. 새 탭에서 학생으로 들어가 봐도 돼요.</small></div><div class="row"><button class="sbtn" id="botAdd">봇 +10</button><button class="sbtn light" id="botDel">봇 제거</button></div></div>
         <div class="setItem"><div><b>🖥 연결 상태</b><small id="netInfo"></small></div></div>
@@ -503,6 +535,23 @@ const BANK_BASE = [
   ['자전거 펌프를 빠르게 누를 때, 기체가 한 일 W의 부호는?\n(+ / 0 / −)', '−/-/음수/마이너스/음', '외부가 기체를 압축했으므로 W < 0이고, 열이 아니라 이 일 때문에 온도가 올라간다.'],
   ['생활 속 현상이 아주 빠르게 일어나면 어떤 과정에 가까울까?\n(등적 / 등압 / 등온 / 단열)', '단열/단열과정/단열 과정', '빠르면 단열, 느리면 등온에 가깝다. 생활 속에 완벽한 과정은 거의 없다.'],
 ].map(([q, a, e]) => ({ q, a, e, k: 'short', time: 20 }));
+
+/* =========================================================
+   기본 OX 문제 : 열기관과 열효율 · 열역학 제2법칙
+   (Q₁ 고열원에서 흡수한 열, Q₂ 저열원으로 방출한 열, W 열기관이 한 일)
+   ========================================================= */
+const BANK_OX = [
+  ['열기관은 고열원에서 흡수한 열의 일부를 일로 바꾸고, 나머지는 저열원으로 방출한다.', 'O', 'Q₁ = W + Q₂'],
+  ['같은 양의 열을 흡수할 때, 저열원으로 방출하는 열이 적을수록 열효율이 높다.', 'O', 'e = 1 − Q₂/Q₁'],
+  ['고열원에서 400 J을 흡수하고 저열원으로 300 J을 방출하는 열기관의 열효율은 0.75이다.', 'X', 'W = 100 J이므로 e = 100/400 = 0.25'],
+  ['열효율이 0.4인 열기관이 한 번의 순환 과정에서 200 J의 일을 하면, 흡수한 열은 500 J이다.', 'O', 'Q₁ = W/e = 200/0.4 = 500 J'],
+  ['마찰이 전혀 없는 이상적인 열기관이라면 열효율이 1(100%)이 될 수 있다.', 'X', '방출하는 열(Q₂)이 0일 수 없어 열효율은 항상 1보다 작다.'],
+  ['열은 스스로 저온의 물체에서 고온의 물체로 이동하지 않는다.', 'O', '열역학 제2법칙: 열은 고온에서 저온으로 이동한다.'],
+  ['냉장고는 외부에서 일을 해 주어야 내부의 열을 바깥으로 내보낼 수 있다.', 'O', '저온에서 고온으로 열을 옮기려면 외부에서 일을 해야 한다.'],
+  ['열역학 제2법칙은 에너지가 보존된다는 법칙이다.', 'X', '에너지 보존은 제1법칙이고, 제2법칙은 변화의 방향성을 말한다.'],
+  ['자연에서 저절로 일어나는 변화는 무질서도(엔트로피)가 증가하는 방향으로 일어난다.', 'O', ''],
+  ['뜨거운 물과 찬물을 섞은 미지근한 물은 저절로 다시 뜨거운 물과 찬물로 나뉠 수 있다.', 'X', '비가역 과정이라 저절로 되돌아가지 않는다.'],
+].map(([q, a, e]) => ({ q, a, e, k: 'ox', time: 15 }));
 
 /* 보기 문제에서 보기 목록 꺼내기 : 문제 끝의 (등적 / 등압 / 등온 / 단열) 같은 괄호 */
 function parseOpts(text) {
@@ -675,7 +724,7 @@ const SND = {
    상태
    ========================================================= */
 /* 방 안에 저장되는 항목들 (방을 닫으면 모두 지워요) */
-const ROOM_KEYS = ['players', 'pos', 'ans', 'sub', 'grade', 'time', 'chance', 'hint', 'cheer', 'notice', 'chat', 'ask', 'state'];
+const ROOM_KEYS = ['players', 'pos', 'ans', 'sub', 'ox', 'fx', 'grade', 'time', 'chance', 'hint', 'cheer', 'notice', 'chat', 'ask', 'state'];
 const S = {
   joined: false, isTeacher: false, room: '', me: '', net: null,
   state: {}, players: {}, pos: {}, ans: {}, grade: null, cheer: {}, notice: null,
@@ -690,6 +739,9 @@ const S = {
 };
 const now = () => Date.now() + (S.net?.offset || 0);
 const ph = () => S.state?.phase || 'wait';
+const isOX = () => S.state?.game === 'ox';
+/* OX 정답 표기 통일 : O, o, ⭕, ○ → 'O' / X, x, ❌, × → 'X' */
+const normOX = a => { const s = String(a || '').trim().toUpperCase(); if (['O', '⭕', '○', 'ㅇ', '맞다', '참'].includes(s)) return 'O'; if (['X', '❌', '×', '✕', '틀리다', '거짓'].includes(s)) return 'X'; return ''; };
 const meP = () => S.players[S.me];
 const playerList = () => Object.entries(S.players || {}).map(([id, p]) => ({ id, ...p })).filter(p => p.name);
 const onlineList = () => playerList().filter(p => p.on || p.bot);
@@ -708,8 +760,8 @@ function addLog(t) {
 const T = {
   async open(mode) {
     const st = await S.net.get('state');
-    if (st && !st.closed && st.phase) { toast('이전 방을 이어서 열었어요'); return; }
-    await S.net.set('state', { phase: 'wait', qn: 0, mode, safe: S.safe, created: now() });
+    if (st && !st.closed && st.phase) { toast('이전 방을 이어서 열었어요'); if (st.game !== joinGame && !['q', 'reveal'].includes(st.phase)) await S.net.update('state', { game: joinGame }); return; }
+    await S.net.set('state', { phase: 'wait', qn: 0, mode, game: joinGame, safe: S.safe, created: now(), predict: true, freeze: true, flipOn: false, oxCount: true, shotsOn: true });
     await Promise.all(ROOM_KEYS.filter(k => k !== 'state').map(k => S.net.remove(k)));
     addLog(`방 ${S.room} 열림 (${mode === 'elim' ? '탈락형' : '점수형'})`);
   },
@@ -718,12 +770,14 @@ const T = {
     if (ph() === 'reveal') { const go = await confirmBox('⚠️', '아직 채점하지 않았어요', '채점하지 않고 다음 문제로 넘어갈까요? (이번 문제는 결과에 반영되지 않아요)', [['취소', 'light', false], ['넘어가기', 'red', true]]); if (!go) return false; }
     const alive = onlineList().filter(p => p.alive).length;
     if (S.state.mode === 'elim' && onlineList().length && !alive) { toast('도전 중인 학생이 없어요. 패자부활이나 새 게임을 해 주세요'); return false; }
-    const qn = (S.state.qn || 0) + 1, time = item.time || S.defTime;
-    await S.net.update('', { ['ans/' + qn]: null, ['sub/' + qn]: null, ['grade/' + qn]: null, ['chance/' + qn]: null, ['hint/' + qn]: null, ['time/' + qn]: null });
+    const ox = isOX();
+    if (ox && item.k !== 'ox') { toast('OX 퀴즈에서는 정답이 O 또는 X인 문제만 낼 수 있어요'); return false; }
+    const qn = (S.state.qn || 0) + 1, time = item.time || (ox ? Math.min(S.defTime, 20) : S.defTime);
+    await S.net.update('', { ['ox/' + qn]: null, ['ans/' + qn]: null, ['sub/' + qn]: null, ['grade/' + qn]: null, ['chance/' + qn]: null, ['hint/' + qn]: null, ['time/' + qn]: null });
     S.curQ = { qn, ans: item.a || '', expl: item.e || '' }; try { localStorage.setItem('gb_curq:' + S.room, JSON.stringify(S.curQ)); } catch (e) {}
-    await S.net.update('state', { phase: 'q', qn, q: { text: item.q, kind: item.k || 'short', img: item.img || null, hasOpts: parseOpts(item.q).length > 1 }, time, startAt: now() + 2500, endsAt: now() + time * 1000 + 2500, result: null });
+    await S.net.update('state', { phase: 'q', qn, q: { text: item.q, kind: item.k || 'short', img: item.img || null, hasOpts: parseOpts(item.q).length > 1 }, time, startAt: now() + 2500, endsAt: now() + time * 1000 + 2500, result: null, revealAt: null, gold: !!item.gold, flip: ox && !!S.state.flipOn && Math.random() < .5, shots: null });
     S.used.add(item.q); saveLocal();
-    addLog(`Q${qn} 출제: ${item.q.slice(0, 30)}`);
+    addLog(`Q${qn} 출제${item.gold ? ' ⭐황금' : ''}: ${item.q.slice(0, 30)}`);
     $('tpanel').hidden = true;
     Bots.answer(qn, item, time);
     return true;
@@ -732,43 +786,88 @@ const T = {
   addTime(sec) { if (ph() === 'q') S.net.update('state', { endsAt: Math.max(S.state.endsAt, now()) + sec * 1000, time: (S.state.time || 0) + sec }); },
   tick() {
     if (!S.isTeacher || !S.joined) return;
-    if (ph() === 'q' && now() > S.state.endsAt + 1800) {
-      S.net.update('state', { phase: 'reveal' });
-      addLog(`Q${S.state.qn} 마감 · 답판 공개`);
+    if (ph() === 'q' && now() > S.state.endsAt + (isOX() ? 500 : 1800)) {
+      S.net.update('state', { phase: 'reveal', revealAt: now() });
+      addLog(`Q${S.state.qn} 마감 · ${isOX() ? '정답 공개 준비' : '답판 공개'}`);
+    }
+    // OX : '정답은...?' 2.6초 뒤 자동 채점
+    if (isOX() && ph() === 'reveal' && S.state.revealAt && now() > S.state.revealAt + 2600 && S.autoGraded !== S.room + ':' + S.state.qn) {
+      S.autoGraded = S.room + ':' + S.state.qn; T.grade(T.oxMarks());
     }
   },
   /* 채점 : regrade 이면 방금 채점한 문제를 채점 전 상태로 되돌린 뒤 다시 계산해요 */
+  /* OX 자동 채점 : 시간 안에 고른 쪽이 정답이면 ⭕ */
+  oxMarks() {
+    const ans = normOX(S.curQ && S.curQ.qn === S.state.qn ? S.curQ.ans : S.state.q?.ans), m = {};
+    for (const p of onlineList()) { const c = S.ox?.[p.id]; m[p.id] = !!(c && c.c && c.c === ans && c.ts <= S.state.endsAt + 1200); }
+    return m;
+  },
   async grade(marks, regrade) {
-    const qn = S.state.qn, mode = S.state.mode;
+    const qn = S.state.qn, mode = S.state.mode, ox = isOX(), gold = !!S.state.gold;
     let snap = S.lastGrade && S.lastGrade.qn === qn && S.lastGrade.room === S.room ? S.lastGrade : null;
     if (regrade && !snap) return toast('이 문제는 다시 채점할 수 없어요');
     if (!regrade) {
       const c0 = onlineList().filter(p => mode === 'score' || p.alive);
-      snap = { room: S.room, qn, cand: c0.map(p => p.id), before: Object.fromEntries(c0.map(p => [p.id, { score: p.score || 0, tsum: p.tsum || 0, alive: p.alive !== false }])), chance: { ...(S.chance || {}) } };
-      S.lastGrade = snap; try { localStorage.setItem('gb_lastgrade', JSON.stringify(snap)); } catch (e) {}
+      // 🔮 응원석 예측전 : 탈락한 학생도 답을 내면 채점해서 2번 맞히면 부활
+      const p0 = mode === 'elim' && S.state.predict !== false ? onlineList().filter(p => !p.alive && (ox ? S.ox?.[p.id]?.c : S.ans?.[p.id])) : [];
+      snap = { room: S.room, qn, cand: c0.map(p => p.id), pred: p0.map(p => p.id), bonus: {},
+        before: Object.fromEntries([...c0, ...p0].map(p => [p.id, { score: p.score || 0, tsum: p.tsum || 0, alive: p.alive !== false, pc: p.pc || 0 }])), chance: { ...(S.chance || {}) } };
+      S.lastGrade = snap;
     }
-    const cand = snap.cand.map(id => ({ id, ...(S.players[id] || {}), ...snap.before[id] })).filter(p => p.name);
+    const pick = ids => (ids || []).map(id => ({ id, ...(S.players[id] || {}), ...snap.before[id] })).filter(p => p.name);
+    const cand = pick(snap.cand), preds = pick(snap.pred);
     const ok = cand.filter(p => marks[p.id] === true), no = cand.filter(p => marks[p.id] !== true);
     const safe = mode === 'elim' && S.state.safe && cand.length > 0 && ok.length === 0;
-    const ch = snap.chance || {};
+    const ch = snap.chance || {}, bonus = snap.bonus || {};
     const up = {};
     const st0 = S.state.startAt || (S.state.endsAt - (S.state.time || 0) * 1000), lim = S.state.time || 60;
-    const took = id => { const a = S.ans?.[id]; return a?.ts ? Math.round(clamp((a.ts - st0) / 1000, 0, lim) * 10) / 10 : lim; };
-    cand.forEach(p => { up[`players/${p.id}/score`] = p.score; up[`players/${p.id}/tsum`] = p.tsum; up[`players/${p.id}/alive`] = p.alive; });
-    ok.forEach(p => { up[`players/${p.id}/score`] = p.score + (ch[p.id] === 'double' ? 2 : 1); up[`players/${p.id}/tsum`] = Math.round((p.tsum + took(p.id)) * 10) / 10; });
+    const took = id => { const ts = ox ? S.ox?.[id]?.ts : S.ans?.[id]?.ts; return ts ? Math.round(clamp((ts - st0) / 1000, 0, lim) * 10) / 10 : lim; };
+    cand.forEach(p => { up[`players/${p.id}/score`] = p.score + (bonus[p.id] || 0); up[`players/${p.id}/tsum`] = p.tsum; up[`players/${p.id}/alive`] = p.alive; });
+    const pts = id => (gold ? 2 : 1) * (ch[id] === 'double' ? 2 : 1);
+    ok.forEach(p => { up[`players/${p.id}/score`] = p.score + pts(p.id) + (bonus[p.id] || 0); up[`players/${p.id}/tsum`] = Math.round((p.tsum + took(p.id)) * 10) / 10; });
     const tm = {}; ok.forEach(p => tm[p.id] = took(p.id)); up['time/' + qn] = tm;
     const shielded = no.filter(p => ch[p.id] === 'shield');
     if (mode === 'elim' && !safe) no.forEach(p => { if (ch[p.id] !== 'shield') up[`players/${p.id}/alive`] = false; });
+    // 예측전 : 맞히면 🔮 +1, 2개 모이면 부활
+    let revived = 0;
+    preds.forEach(p => {
+      up[`players/${p.id}/alive`] = false; up[`players/${p.id}/pc`] = p.pc;
+      if (marks[p.id] === true) { if (p.pc + 1 >= 2) { up[`players/${p.id}/alive`] = true; up[`players/${p.id}/pc`] = 0; revived++; } else up[`players/${p.id}/pc`] = p.pc + 1; }
+    });
     const cq = S.curQ && S.curQ.qn === qn ? S.curQ : null;
     up['state/q/ans'] = cq ? cq.ans : (S.state.q?.ans || ''); up['state/q/expl'] = cq ? cq.expl : (S.state.q?.expl || '');
-    const g = {}; cand.forEach(p => g[p.id] = marks[p.id] === true);
+    const g = {}; [...cand, ...preds].forEach(p => g[p.id] = marks[p.id] === true);
     up['grade/' + qn] = g;
     up['state/phase'] = 'graded'; up['state/gradeV'] = now();
-    up['state/result'] = { ok: ok.length, no: no.length, safe, left: mode === 'elim' ? (safe ? cand.length : ok.length + shielded.length) : null, re: !!regrade };
+    const left = mode === 'elim' ? (safe ? cand.length : ok.length + shielded.length) + revived : null;
+    let oc = 0, xc = 0, nc = 0; if (ox) cand.forEach(p => { const c = S.ox?.[p.id]?.c; c === 'O' ? oc++ : c === 'X' ? xc++ : nc++; });
+    up['state/result'] = { ok: ok.length, no: no.length, safe, left, re: !!regrade, rev: revived, o: oc, x: xc, none: nc, gold };
+    // 👑 결승전 : 탈락형에서 2~3명만 남으면
+    if (mode === 'elim') up['state/final'] = left >= 2 && left <= 3 && onlineList().length > 3 ? true : left > 3 ? false : !!S.state.final;
     await S.net.update('', up);
-    addLog(`Q${qn} ${regrade ? '채점 수정' : '채점'}: ⭕${ok.length} ❌${no.length}${safe ? ' (모두 틀려서 전원 생존)' : ''}`);
+    // 📊 문제별 결과 기록
+    const row = { qn, q: (S.state.q?.text || '').slice(0, 40), ok: ok.length, n: cand.length, o: oc, x: xc, none: nc, ox, ans: cq ? cq.ans : '' };
+    S.stats = (S.stats || []).filter(r => r.qn !== qn).concat(row).sort((a, b) => a.qn - b.qn);
+    try { localStorage.setItem('gb_stats:' + S.room, JSON.stringify(S.stats)); } catch (e) {}
+    addLog(`Q${qn} ${regrade ? '채점 수정' : '채점'}: ⭕${ok.length} ❌${no.length}${safe ? ' (모두 틀려서 전원 생존)' : ''}${revived ? ` · 🔮 예측 부활 ${revived}명` : ''}`);
     if (mode === 'elim' && !safe && !regrade) Bots.toCheer(no.filter(p => p.bot && ch[p.id] !== 'shield').map(p => p.id));
+    if (ox && !regrade && S.state.shotsOn !== false) setTimeout(() => T.bonusShots(qn, ok.map(p => p.id)), 2800);
   },
+  /* 🏀 보너스 슛 : 맞힌 학생 중 무작위 3명이 슛, 들어가면 +1점 */
+  async bonusShots(qn, okIds) {
+    if (S.state.qn !== qn || ph() !== 'graded') return;
+    const pool = okIds.filter(id => S.players[id]?.name && (S.players[id].on || S.players[id].bot)).sort(() => Math.random() - .5).slice(0, 3);
+    if (!pool.length) return;
+    const list = pool.map(id => ({ id, made: Math.random() < .55 })), up = { 'state/shots': { qn, ts: now(), list } };
+    list.forEach(s => { if (s.made) { up[`players/${s.id}/score`] = (S.players[s.id].score || 0) + 1; if (S.lastGrade && S.lastGrade.qn === qn) S.lastGrade.bonus[s.id] = (S.lastGrade.bonus[s.id] || 0) + 1; } });
+    await S.net.update('', up);
+    addLog(`🏀 보너스 슛: ${list.map(s => `${S.players[s.id]?.name}${s.made ? ' 성공' : ' 실패'}`).join(', ')}`);
+  },
+  setGame(g) {
+    if (['q', 'reveal'].includes(ph())) return toast('문제가 끝난 뒤에 바꿀 수 있어요');
+    S.net.update('state', { game: g, phase: 'wait' }); addLog(g === 'ox' ? '⭕❌ OX 퀴즈로 바꿈' : '🔔 골든벨로 바꿈');
+  },
+  setOpt(k, v) { S.net.update('state', { [k]: v }); },
   /* 학생 관리 */
   kick(id) { S.net.update('', { ['players/' + id]: null, ['pos/' + id]: null, ['cheer/' + id]: null }); },
   rename(id, name) { S.net.update('players/' + id, { name }); },
@@ -776,14 +875,15 @@ const T = {
   dropCheer(id) { S.net.remove('cheer/' + id); },
   toWait() { S.net.update('state', { phase: 'wait' }); },
   async newGame() {
-    const up = { 'state/phase': 'wait', 'state/qn': 0, 'state/q': null, 'state/result': null, ans: null, grade: null, time: null };
-    playerList().forEach(p => { up[`players/${p.id}/alive`] = true; up[`players/${p.id}/score`] = 0; up[`players/${p.id}/tsum`] = 0; up[`players/${p.id}/cards`] = null; });
+    const up = { 'state/phase': 'wait', 'state/qn': 0, 'state/q': null, 'state/result': null, 'state/final': false, 'state/shots': null, ans: null, grade: null, time: null, ox: null, fx: null };
+    S.stats = []; try { localStorage.removeItem('gb_stats:' + S.room); } catch (e) {}
+    playerList().forEach(p => { up[`players/${p.id}/alive`] = true; up[`players/${p.id}/score`] = 0; up[`players/${p.id}/tsum`] = 0; up[`players/${p.id}/cards`] = null; up[`players/${p.id}/pc`] = 0; });
     up.chance = null; up.hint = null; up.time = null; up.sub = null;
     await S.net.update('', up); addLog('🔄 새 게임 시작'); toast('새 게임! 모두 다시 도전해요');
   },
   async revive() {
-    const up = {}; let n = 0;
-    playerList().forEach(p => { if (!p.alive) { up[`players/${p.id}/alive`] = true; n++; } });
+    const up = { 'state/final': false }; let n = 0;
+    playerList().forEach(p => { if (!p.alive) { up[`players/${p.id}/alive`] = true; up[`players/${p.id}/pc`] = 0; n++; } });
     if (!n) return toast('응원단에 학생이 없어요');
     up['state/revive'] = now();
     await S.net.update('', up); addLog(`✨ 패자부활 ${n}명`); toast(`✨ ${n}명 부활!`);
@@ -853,15 +953,21 @@ const Bots = {
   },
   answer(qn, item, time) {
     S.botTimers.forEach(clearTimeout); S.botTimers = [];
-    const mode = S.state.mode;
-    this.list().filter(p => mode === 'score' || p.alive).forEach(p => {
+    const mode = S.state.mode, ox = item.k === 'ox' && isOX(), predict = mode === 'elim' && S.state.predict !== false;
+    this.list().filter(p => mode === 'score' || p.alive || predict).forEach(p => {
       S.botTimers.push(setTimeout(() => {
         if (ph() !== 'q' || S.state.qn !== qn) return;
-        const right = Math.random() < .72, answers = String(item.a || '').split('/');
+        const right = Math.random() < .72, ts = now();
+        if (ox) {
+          const ans = normOX(item.a), c = right ? ans : (ans === 'O' ? 'X' : 'O'), up = { [`ox/${qn}/${p.id}`]: { c, ts } };
+          if (p.alive || mode === 'score') { const z = oxZonePoint(c); up['pos/' + p.id] = { x: z.x, z: z.z, r: Math.PI, s: 0 }; }
+          S.net.update('', up); return;
+        }
+        const answers = String(item.a || '').split('/');
         const wrongs = ['등적', '등압', '등온', '단열', '증가', '감소', '일정', '+', '0', '−'];
         const txt = item.k === 'draw' ? '' : (right ? answers[0] : wrongs[Math.floor(Math.random() * wrongs.length)]);
-        const ts = now(); S.net.update('', { [`ans/${qn}/${p.id}`]: { img: botBoard(txt, item.k === 'draw'), ts }, [`sub/${qn}/${p.id}`]: ts });
-      }, 1500 + Math.random() * Math.max(1000, (time - 3) * 1000)));
+        S.net.update('', { [`ans/${qn}/${p.id}`]: { img: botBoard(txt, item.k === 'draw'), ts }, [`sub/${qn}/${p.id}`]: ts });
+      }, 1500 + Math.random() * Math.max(1000, (time - (ox ? 4 : 3)) * 1000)));
     });
   },
   toCheer(ids) {
@@ -1058,6 +1164,7 @@ function applyTheme(t) {
   sun.color.set(ev ? '#ff9a6a' : '#fff4dd'); sun.intensity = ev ? .7 : 1.5;
   winM.map = SKY[t]; winM.needsUpdate = true;
   glowM.opacity = ev ? .95 : .55; lampM.color.set(ev ? '#ffe9a8' : '#fff7d6');
+  try { skyDome.material.map = ev ? skyDomeTexEv : skyDomeTex; skyDome.material.needsUpdate = true; if (isOX() && !ev) { sun.intensity = 1.9; hemi.intensity = 1.35; } } catch (e) {}   // 야외(농구장) 하늘
 }
 applyTheme('day');
 
@@ -1077,6 +1184,190 @@ for (let t = 0; t < 3; t++) box(30, .45 * (t + 1), 1.6, M(['#e07a3f', '#d9a03b',
 const cheerBanner = new THREE.Mesh(new THREE.PlaneGeometry(10, 1.4), new THREE.MeshBasicMaterial({ map: canvasTex(800, 112, (g, w, h) => { g.fillStyle = '#ffd84d'; g.fillRect(0, 0, w, h); g.fillStyle = '#1e1b18'; g.font = 'bold 72px Pretendard,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('📣 응 원 단 📣', w / 2, h / 2 + 4); }) }));
 cheerBanner.position.set(0, 5.2, 16.95); cheerBanner.rotation.y = Math.PI; scene.add(cheerBanner);
 function groundY(x, z) { if (z > 10.8 && Math.abs(x) < 15) return Math.min(3, Math.floor((z - 10.8) / 1.6) + 1) * .45; return 0; }
+
+
+/* =========================================================
+   장면 나누기 : 지금까지 만든 강당은 HALL, OX 퀴즈용 야외 농구장은 COURT
+   ========================================================= */
+const HALL = new THREE.Group(); scene.add(HALL);
+for (const o of [...scene.children]) if (![hemi, sun, spot, spot.target, HALL].includes(o) && !o.isCamera) HALL.attach(o);
+const COURT = new THREE.Group(); COURT.visible = false; scene.add(COURT);
+const CW = 15, CD = 8.5;   // 코트 반폭(x) · 반깊이(z)
+function cbox(w, h, d, mat, x = 0, y = 0, z = 0, parent = COURT) { return box(w, h, d, mat, x, y, z, parent); }
+
+/* 하늘 · 바닥 */
+const skyDomeTex = canvasTex(32, 256, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#4fa3f7'); gr.addColorStop(.55, '#a9d8ff'); gr.addColorStop(1, '#e9f6ff'); g.fillStyle = gr; g.fillRect(0, 0, w, h); });
+const skyDomeTexEv = canvasTex(32, 256, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#2b2457'); gr.addColorStop(.5, '#b4507a'); gr.addColorStop(1, '#ffb36b'); g.fillStyle = gr; g.fillRect(0, 0, w, h); });
+const skyDome = new THREE.Mesh(new THREE.SphereGeometry(140, 32, 16), new THREE.MeshBasicMaterial({ map: skyDomeTex, side: THREE.BackSide, fog: false })); COURT.add(skyDome);
+for (let i = 0; i < 9; i++) { // 구름
+  const c = new THREE.Group(), a = i / 9 * Math.PI * 2 + .3, r = 70 + (i % 3) * 15;
+  for (let k = 0; k < 4; k++) { const s = new THREE.Mesh(new THREE.SphereGeometry(4 + Math.random() * 3, 12, 8), new THREE.MeshBasicMaterial({ color: '#ffffff' })); s.position.set(k * 5 - 7, Math.random() * 2, Math.random() * 3); s.scale.y = .55; c.add(s); }
+  c.position.set(Math.cos(a) * r, 34 + (i % 4) * 5, Math.sin(a) * r); c.lookAt(0, 34, 0); COURT.add(c);
+}
+const grass = new THREE.Mesh(new THREE.PlaneGeometry(240, 240), M('#7cc46a')); grass.rotation.x = -Math.PI / 2; grass.position.y = -.02; grass.receiveShadow = true; COURT.add(grass);
+const dirt = new THREE.Mesh(new THREE.PlaneGeometry(90, 52), M('#d9b98a')); dirt.rotation.x = -Math.PI / 2; dirt.position.set(0, -.01, 8); dirt.receiveShadow = true; COURT.add(dirt);   // 흙 운동장
+
+/* 농구 코트 : 왼쪽 반 / 오른쪽 반이 ⭕ / ❌ (문제마다 바뀔 수 있어요) */
+function courtTex(flip) {
+  return canvasTex(2048, 1160, (g, W, H) => {
+    const m = 40, cw = W - m * 2, ch = H - m * 2;
+    g.fillStyle = '#2f6e4f'; g.fillRect(0, 0, W, H);                 // 바깥 테두리
+    const half = (left, isO) => { g.fillStyle = isO ? '#2b67c9' : '#c93a3a'; g.fillRect(left ? m : W / 2, m, cw / 2, ch); };
+    half(true, !flip); half(false, flip);
+    g.fillStyle = 'rgba(255,255,255,.10)'; g.fillRect(W / 2 - 52, m, 104, ch);   // 가운데 '미선택' 띠
+    g.strokeStyle = '#fff'; g.lineWidth = 10; g.strokeRect(m, m, cw, ch);
+    g.beginPath(); g.moveTo(W / 2, m); g.lineTo(W / 2, H - m); g.stroke();
+    g.beginPath(); g.arc(W / 2, H / 2, 130, 0, 7); g.stroke();
+    for (const s of [-1, 1]) { // 자유투 구역 · 3점 선
+      const bx = s < 0 ? m : W - m; g.strokeRect(s < 0 ? m : W - m - 420, H / 2 - 180, 420, 360);
+      g.beginPath(); g.arc(bx + s * -0, H / 2, 560, s < 0 ? -Math.PI / 2 : Math.PI / 2, s < 0 ? Math.PI / 2 : Math.PI * 1.5); g.stroke();
+    }
+    // 큰 ⭕ / ❌
+    const drawO = cx => { g.strokeStyle = 'rgba(255,255,255,.92)'; g.lineWidth = 70; g.beginPath(); g.arc(cx, H / 2, 250, 0, 7); g.stroke(); };
+    const drawX = cx => { g.strokeStyle = 'rgba(255,255,255,.92)'; g.lineWidth = 80; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx - 210, H / 2 - 210); g.lineTo(cx + 210, H / 2 + 210); g.moveTo(cx + 210, H / 2 - 210); g.lineTo(cx - 210, H / 2 + 210); g.stroke(); };
+    const L = W / 4 + 10, Rr = W * 3 / 4 - 10;
+    if (!flip) { drawO(L); drawX(Rr); } else { drawX(L); drawO(Rr); }
+  });
+}
+const COURT_TEX = { false: courtTex(false), true: courtTex(true) };
+const courtM = new THREE.MeshStandardMaterial({ map: COURT_TEX.false, roughness: .7 });
+const courtMesh = new THREE.Mesh(new THREE.PlaneGeometry(CW * 2 + 1.2, CD * 2 + .9), courtM); courtMesh.rotation.x = -Math.PI / 2; courtMesh.position.y = .01; courtMesh.receiveShadow = true; COURT.add(courtMesh);
+let courtFlip = false;
+function setCourtFlip(f) { f = !!f; if (f === courtFlip) return; courtFlip = f; courtM.map = COURT_TEX[f]; courtM.needsUpdate = true; }
+
+/* 골대 */
+const hoops = [];
+for (const s of [-1, 1]) {
+  const g = new THREE.Group(); g.position.set(s * (CW + .6), 0, 0); COURT.add(g);
+  cbox(.25, 3.6, .25, M('#475569'), 0, 1.8, 0, g); cbox(1.2, .2, .2, M('#475569'), -s * .6, 3.5, 0, g);
+  cbox(.1, 1.1, 1.8, M('#ffffff'), -s * 1.2, 3.9, 0, g); cbox(.11, .5, .6, M('#ef4444'), -s * 1.21, 3.75, 0, g);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(.26, .03, 8, 20), M('#f97316')); rim.rotation.x = Math.PI / 2; rim.position.set(-s * 1.55, 3.45, 0); g.add(rim);
+  const net = new THREE.Mesh(new THREE.CylinderGeometry(.26, .16, .4, 12, 1, true), new THREE.MeshBasicMaterial({ color: '#f8fafc', wireframe: true })); net.position.set(-s * 1.55, 3.22, 0); g.add(net);
+  hoops.push(new THREE.Vector3(s * (CW + .6) - s * 1.55, 3.45, 0));
+}
+
+/* 학교 건물 + 전광판 + 시계 + 현수막 */
+const bldTex = canvasTex(1024, 512, (g, W, H) => {
+  g.fillStyle = '#f1e4cf'; g.fillRect(0, 0, W, H);
+  for (let f = 0; f < 4; f++) for (let i = 0; i < 16; i++) {
+    const x = 22 + i * 63, y = 30 + f * 120; if (i >= 5 && i <= 10 && f <= 2) continue;   // 가운데는 전광판 자리
+    g.fillStyle = '#7fb6de'; g.fillRect(x, y, 44, 70); g.strokeStyle = '#8a6a4a'; g.lineWidth = 4; g.strokeRect(x, y, 44, 70); g.beginPath(); g.moveTo(x + 22, y); g.lineTo(x + 22, y + 70); g.stroke();
+  }
+  g.fillStyle = '#c9b08a'; for (let f = 1; f < 4; f++) g.fillRect(0, f * 120 + 8, W, 8);
+});
+const bld = new THREE.Mesh(new THREE.BoxGeometry(56, 16, 9), [M('#e7d6bb'), M('#e7d6bb'), M('#b45f3c'), M('#e7d6bb'), M('#ffffff', { map: bldTex }), M('#e7d6bb')]);
+bld.position.set(0, 8, -24); bld.castShadow = bld.receiveShadow = true; COURT.add(bld);
+cbox(57, .6, 10, M('#9a4b2e'), 0, 16.3, -24);
+cbox(9, 2.4, 1.2, M('#e7d6bb'), 0, 17.6, -21);
+const clockTex = canvasTex(256, 256, (g) => { g.fillStyle = '#fff'; g.beginPath(); g.arc(128, 128, 120, 0, 7); g.fill(); g.strokeStyle = '#1e1b18'; g.lineWidth = 10; g.stroke(); for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; g.fillStyle = '#1e1b18'; g.fillRect(128 + Math.sin(a) * 96 - 4, 128 - Math.cos(a) * 96 - 4, 8, 8); } });
+const clockFace = new THREE.Mesh(new THREE.CircleGeometry(1.1, 32), new THREE.MeshBasicMaterial({ map: clockTex })); clockFace.position.set(0, 17.7, -20.38); COURT.add(clockFace);
+const handM = new THREE.MeshBasicMaterial({ color: '#1e1b18' });
+const hourH = new THREE.Mesh(new THREE.BoxGeometry(.08, .55, .02), handM), minH = new THREE.Mesh(new THREE.BoxGeometry(.05, .85, .02), handM);
+for (const h of [hourH, minH]) { h.geometry.translate(0, h.geometry.parameters.height / 2, 0); h.position.set(0, 17.7, -20.36); COURT.add(h); }
+// 건물 벽 전광판 (강당 전광판과 같은 화면을 함께 써요)
+const oxScreen = new THREE.Mesh(new THREE.PlaneGeometry(15.4, 6.74), new THREE.MeshBasicMaterial({ map: scrTex })); oxScreen.position.set(0, 9.4, -19.25); COURT.add(oxScreen);
+const oxFrameM = M('#1e1b18'); cbox(16, 7.3, .4, oxFrameM, 0, 9.4, -19.5);
+// 현수막
+const oxBanner = new THREE.Mesh(new THREE.PlaneGeometry(17, 1.0), new THREE.MeshBasicMaterial({ map: bannerTex })); oxBanner.position.set(0, 4.6, -19.42); COURT.add(oxBanner);
+// 현관
+cbox(7, 3.6, 1, M('#cbd5e1'), 0, 1.8, -19.9); cbox(6, 3, .2, M('#5b8fb9'), 0, 1.6, -19.35);
+
+/* 구령대 (선생님 자리) */
+const podM = M('#9ca3af');
+cbox(9, 1.2, 3.4, podM, 0, .6, -14.2); cbox(9.2, .12, 3.6, M('#6b7280'), 0, 1.22, -14.2);
+for (let i = 0; i < 3; i++) cbox(3, .4 * (i + 1), .5, podM, 0, .2 * (i + 1), -12.25 + (2 - i) * .5);
+cbox(.15, 1, 3.4, M('#475569'), -4.5, 1.7, -14.2); cbox(.15, 1, 3.4, M('#475569'), 4.5, 1.7, -14.2);
+
+/* 응원 스탠드 (강당 응원석과 같은 자리) */
+for (let t = 0; t < 3; t++) cbox(30, .45 * (t + 1), 1.6, M(['#94a3b8', '#64748b', '#475569'][t]), 0, .225 * (t + 1), 11.6 + t * 1.6);
+for (let t = 0; t < 3; t++) cbox(30, .06, 1.5, M(['#38bdf8', '#f59e0b', '#22c55e'][t]), 0, .45 * (t + 1) + .03, 11.6 + t * 1.6);
+const standSign = new THREE.Mesh(new THREE.PlaneGeometry(9, 1.2), new THREE.MeshBasicMaterial({ map: cheerBanner.material.map })); standSign.position.set(0, 2.6, 15.3); standSign.rotation.y = Math.PI; COURT.add(standSign);
+cbox(30, 1.4, .2, M('#334155'), 0, 2.0, 15.45);
+
+/* 나무 · 울타리 · 축구 골대 · 철봉 · 화단 */
+function tree(x, z, s = 1) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(s); COURT.add(g);
+  const tr = new THREE.Mesh(new THREE.CylinderGeometry(.25, .35, 2.4, 8), M('#7c4a2a')); tr.position.y = 1.2; tr.castShadow = true; g.add(tr);
+  for (const [lx, ly, lz, r] of [[0, 3.2, 0, 1.4], [.8, 2.7, .3, 1], [-.7, 2.8, -.2, 1.05], [0, 4.1, 0, .9]]) { const l = new THREE.Mesh(new THREE.SphereGeometry(r, 12, 10), M(LITE ? '#3f9d4b' : '#43a047')); l.position.set(lx, ly, lz); l.castShadow = true; g.add(l); }
+}
+for (let i = 0; i < 7; i++) { tree(-23 - (i % 2) * 2, -14 + i * 5.5, .9 + (i % 3) * .15); tree(23 + (i % 2) * 2, -14 + i * 5.5, .9 + ((i + 1) % 3) * .15); }
+for (let i = 0; i < 6; i++) tree(-30 + i * 12, 30, 1.1);
+const fenceM = M('#64748b');
+for (const x of [-20.5, 20.5]) { cbox(.12, 2.2, 36, fenceM, x, 1.1, 1); for (let z = -17; z <= 19; z += 3) cbox(.18, 2.4, .18, fenceM, x, 1.2, z); }
+for (const s of [-1, 1]) { // 축구 골대 (멀리)
+  const g = new THREE.Group(); g.position.set(s * 38, 0, 10); g.rotation.y = s * Math.PI / 2; COURT.add(g);
+  const pm = M('#f8fafc'); cbox(.15, 2.4, .15, pm, -3.6, 1.2, 0, g); cbox(.15, 2.4, .15, pm, 3.6, 1.2, 0, g); cbox(7.3, .15, .15, pm, 0, 2.4, 0, g);
+}
+{ // 철봉
+  const g = new THREE.Group(); g.position.set(-27, 0, 20); COURT.add(g);
+  for (let i = 0; i < 4; i++) cbox(.14, 1.4 + i * .3, .14, M('#ef4444'), i * 1.3, (1.4 + i * .3) / 2, 0, g);
+  for (let i = 0; i < 3; i++) { const b = new THREE.Mesh(new THREE.CylinderGeometry(.04, .04, 1.3, 8), M('#cbd5e1')); b.rotation.z = Math.PI / 2; b.position.set(i * 1.3 + .65, 1.4 + i * .3, 0); g.add(b); }
+}
+for (const x of [-12, 12]) { cbox(8, .5, 1.6, M('#a16207'), x, .25, -18.6); for (let i = 0; i < 6; i++) { const f = new THREE.Mesh(new THREE.SphereGeometry(.28, 8, 6), M(['#f43f5e', '#facc15', '#fb923c', '#e879f9'][i % 4])); f.position.set(x - 3 + i * 1.2, .7, -18.6); COURT.add(f); } }
+
+/* =========================================================
+   OX 퀴즈 도우미
+   ========================================================= */
+const OX_MID = .9;   // 가운데 미선택 띠 반폭
+const oSign = () => (S.state.flip ? 1 : -1);   // ⭕ 가 있는 쪽 (-1 왼쪽, +1 오른쪽)
+function oxZoneOf(x) { if (Math.abs(x) < OX_MID) return null; return Math.sign(x) === oSign() ? 'O' : 'X'; }
+function oxZonePoint(c) { const s = c === 'O' ? oSign() : -oSign(); return { x: s * (2.2 + Math.random() * (CW - 3.2)), z: (Math.random() - .5) * (CD * 2 - 2) }; }
+const oxHome = n => { const i = (n || 1) - 1, c = i % COLS, r = Math.floor(i / COLS); return { x: (c - (COLS - 1) / 2) * 2.6, z: -5.6 + r * 2.2 }; };
+const freezeOn = () => isOX() && S.state.freeze !== false && ph() === 'q' && S.state.endsAt - now() <= 3000 && S.state.endsAt - now() > -1500 && S.state.endsAt - now() < (S.state.time || 0) * 1000;
+let sceneNow = '';
+function applyScene() {
+  const ox = isOX(), k = ox ? 'ox' : 'bell'; if (k === sceneNow) return; sceneNow = k;
+  HALL.visible = !ox; COURT.visible = ox;
+  spot.visible = !ox;
+  Object.assign(ROOM, ox ? { x: 34, zMin: -18, zMax: 34 } : { x: 17.4, zMin: -16.2, zMax: 16.6 });
+  themeNow = ''; applyTheme(S.state.theme);
+  if (S.joined) for (const id of Object.keys(AV)) { const p = S.players[id]; if (p) { const h = homeOf({ id, ...p }); AV[id].cur.set(h.x, h.y, h.z); } }
+  if (S.joined && !S.isTeacher) { const p = meP(); if (p) { const h = homeOf({ id: S.me, ...p }); ME.x = h.x; ME.z = h.z; ME.r = h.r; ME.goal = null; sendPos(true); } }
+  if (S.joined) setView(S.isTeacher ? 'stage' : 'me');
+}
+/* 🎈 물풍선 */
+const balloonGeo = new THREE.SphereGeometry(.32, 14, 10);
+const balloonM = [new THREE.MeshStandardMaterial({ color: '#38bdf8', roughness: .3 }), new THREE.MeshStandardMaterial({ color: '#f472b6', roughness: .3 }), new THREE.MeshStandardMaterial({ color: '#a3e635', roughness: .3 })];
+const BALLS = [];
+function dropBalloon(target, delay = 0, from = null) {
+  const m = new THREE.Mesh(balloonGeo, pick(balloonM)); m.visible = false; COURT.add(m);
+  const start = from ? from.clone() : new THREE.Vector3(target.x + (Math.random() - .5) * 2, 14 + Math.random() * 3, target.z + (Math.random() - .5) * 2);
+  BALLS.push({ m, start, end: new THREE.Vector3(target.x, target.y || 2.2, target.z), t: -delay, dur: from ? 1.1 : .9, arc: !!from });
+}
+function splash(pos) {
+  const n = LITE ? 4 : 9;
+  for (let i = 0; i < n; i++) { const s = emojiSprite(pick(['💦', '💧']), .45); s.position.set(pos.x, pos.y, pos.z); scene.add(s); FX.push({ s, v: new THREE.Vector3((Math.random() - .5) * 4, 1.5 + Math.random() * 2.5, (Math.random() - .5) * 4), life: .9 + Math.random() * .4 }); }
+  SND.tone(220, .25, 'sine', .12, 0, 90); SND.tone(800, .12, 'triangle', .05, .02, 200);
+}
+function soakAvatar(a) { dropBalloon(new THREE.Vector3(a.root.position.x, a.root.position.y + 2.1, a.root.position.z), Math.random() * .5); a.wetT = 4; }
+/* 🏀 보너스 슛 */
+const ballGeo = new THREE.SphereGeometry(.24, 16, 12), ballMat = M('#ea580c');
+function shootBall(a, made) {
+  const from = a.root.position.clone().add(new THREE.Vector3(0, 1.8, 0));
+  const hoop = hoops.reduce((b, h) => h.distanceTo(from) < b.distanceTo(from) ? h : b, hoops[0]).clone();
+  const end = made ? hoop.clone() : hoop.clone().add(new THREE.Vector3((Math.random() - .5) * .9, .25, (Math.random() - .5) * .9));
+  const m = new THREE.Mesh(ballGeo, ballMat); m.castShadow = true; COURT.add(m);
+  BALLS.push({ m, start: from, end, t: 0, dur: 1.3, arc: true, ball: true, made, after: made ? 'drop' : 'bounce' });
+  a.emote = 2; a.emoteT = 1.2;
+}
+function updateBalls(dt) {
+  for (let i = BALLS.length - 1; i >= 0; i--) {
+    const b = BALLS[i]; b.t += dt; if (b.t < 0) continue;
+    const k = Math.min(1, b.t / b.dur); b.m.visible = true;
+    b.m.position.lerpVectors(b.start, b.end, k);
+    if (b.arc) b.m.position.y += Math.sin(k * Math.PI) * (b.ball ? 3.2 : 2.5);
+    else b.m.position.y = lerp(b.start.y, b.end.y, k * k);
+    if (b.ball) b.m.rotation.x += dt * 8;
+    if (k >= 1) {
+      if (b.ball) {
+        if (b.after === 'drop') { b.after = null; b.start = b.end.clone(); b.end = b.end.clone().setY(.25); b.t = 0; b.dur = .5; b.arc = false; SND.ok(); continue; }
+        if (b.after === 'bounce') { b.after = null; b.start = b.end.clone(); b.end = b.end.clone().add(new THREE.Vector3((Math.random() - .5) * 4, -b.end.y + .25, 2 + Math.random() * 2)); b.t = 0; b.dur = .8; b.arc = true; SND.tone(160, .12, 'square', .08); continue; }
+        b.life = (b.life ?? 1.2) - dt; if (b.life > 0) { b.t = b.dur; continue; }
+      } else splash(b.m.position);
+      COURT.remove(b.m); BALLS.splice(i, 1);
+    }
+  }
+}
 
 /* 이동 목표 표시 */
 const targetRing = new THREE.Mesh(new THREE.RingGeometry(.35, .5, 28), new THREE.MeshBasicMaterial({ color: '#f2b705', transparent: true, opacity: .9 }));
@@ -1292,6 +1583,7 @@ let taPhase = '';
 setTeacherLook(null);
 function animTeacher(dt, t) {
   setTeacherLook(S.state.tlook);
+  if (isOX()) { TA.root.position.set(0, 1.28, -14.3); TA.root.rotation.y = 0; } else { TA.root.position.set(4.6, 1.2, -12.3); TA.root.rotation.y = .15; }
   const phs = ph();
   if (phs !== taPhase) { taPhase = phs; TA.emoteT = 2.4; TA.emote = { q: 1, reveal: 8, graded: 6, end: 2, wait: 1 }[phs] || 0; if (TA.emote) showBubble(TA, { q: '📢', reveal: '👀', graded: '👏', end: '🏆', wait: '👋' }[phs] || '👋'); }
   let ax0 = Math.sin(t * 1.3) * .08, ax1 = -Math.sin(t * 1.3) * .08, az0 = 0, az1 = 0, by = 0;
@@ -1316,7 +1608,7 @@ function setLabel(a, text, me) {
 }
 function setMark(a, m) {
   if (a.markV === m) return; const was = a.markV; a.markV = m;
-  if (was !== undefined && m === 'ok') emitStars(a.root.position); else if (was !== undefined && m === 'no') rainCloud(a);
+  if (was !== undefined && m === 'ok') emitStars(a.root.position); else if (was !== undefined && m === 'no') (isOX() ? soakAvatar(a) : rainCloud(a));
   if (a.mark) { a.root.remove(a.mark); a.mark = null; }
   if (m) { a.mark = emojiSprite(m === 'ok' ? '⭕' : '❌', .9); a.mark.position.y = 3.55; a.root.add(a.mark); }
 }
@@ -1346,6 +1638,10 @@ function syncAvatars() {
       const t = homeOf(p); a.cur = new THREE.Vector3(t.x, t.y, t.z); a.root.position.copy(a.cur); a.root.rotation.y = a.rot = t.r;
       if (p.id === S.me) { ME.x = t.x; ME.z = t.z; ME.r = t.r; }
     }
+    if (p.id === S.me && a.aliveSeen !== undefined && a.aliveSeen !== p.alive && S.state.mode === 'elim') {   // 탈락하면 응원석으로, 부활하면 코트·자리로
+      const h = homeOf(p); ME.goal = { x: h.x, z: h.z, face: Math.PI }; if (p.alive) toast('✨ 부활! 다시 도전해요', 3000);
+    }
+    if (p.id === S.me) a.aliveSeen = p.alive;
     if (p.id === S.me && a.seatSeen !== p.seat) {   // 자리 번호를 받거나 바뀌면 그 방석으로 옮겨 앉아요
       a.seatSeen = p.seat;
       if (p.seat && (p.alive || S.state.mode === 'score')) { const h = homeOf(p); ME.x = h.x; ME.z = h.z; ME.r = h.r; ME.sit = true; ME.goal = null; targetRing.visible = false; a.cur.set(h.x, h.y, h.z); sendPos(true); }
@@ -1358,9 +1654,10 @@ function syncAvatars() {
 function outIndex(id) { return onlineList().filter(p => !p.alive).sort((a, b) => (a.seat || 99) - (b.seat || 99)).findIndex(p => p.id === id); }
 function homeOf(p) {
   if (!p.alive && S.state.mode === 'elim') { const c = cheerXYZ(Math.max(0, outIndex(p.id))); return { x: c.x, y: c.y, z: c.z, r: Math.PI, sit: false }; }
+  if (isOX()) { const h = oxHome(p.seat); return { x: h.x, y: 0, z: h.z, r: Math.PI, sit: false }; }   // 농구장 : 자리 번호 순서로 코트에 서요
   const s = seatXZ(p.seat || 1); return { x: s.x, y: .14, z: s.z, r: Math.PI, sit: true };
 }
-const lockedAtSeat = p => p && p.seat && SEAT_PHASES.includes(ph()) && (p.alive || S.state.mode === 'score');
+const lockedAtSeat = p => !isOX() && p && p.seat && SEAT_PHASES.includes(ph()) && (p.alive || S.state.mode === 'score');
 function targetOf(p) {
   if (lockedAtSeat(p)) return homeOf(p);
   if (p.id === S.me) return { x: ME.x, y: groundY(ME.x, ME.z), z: ME.z, r: ME.r, sit: ME.sit };
@@ -1392,7 +1689,8 @@ renderer.domElement.addEventListener('pointerup', e => {
   const hit = ray.intersectObject(floor)[0] || null;
   let p = hit?.point;
   if (!p) { const pl = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); p = new THREE.Vector3(); if (!ray.ray.intersectPlane(pl, p)) return; }
-  ME.goal = { x: clamp(p.x, -17, 17), z: clamp(p.z, -9.8, 16.4) };
+  if (freezeOn()) return toast('🧊 얼음! 마지막 3초는 움직일 수 없어요');
+  const B = moveBounds(); ME.goal = { x: clamp(p.x, -B.x, B.x), z: clamp(p.z, B.z0, B.z1) };
   targetRing.position.set(ME.goal.x, groundY(ME.goal.x, ME.goal.z) + .03, ME.goal.z); targetRing.visible = true;
 });
 // 조이스틱
@@ -1405,9 +1703,11 @@ renderer.domElement.addEventListener('pointerup', e => {
   joy.addEventListener('pointerup', end); joy.addEventListener('pointercancel', end);
 })();
 
+const moveBounds = () => isOX() ? { x: 19.5, z0: -11.2, z1: 16.4 } : { x: 17.2, z0: -9.9, z1: 16.4 };
 function goToSeat() {
   const p = meP(); if (!p || !p.seat) return toast('아직 자리 번호가 없어요');
   if (!p.alive && S.state.mode === 'elim') return toast('응원단은 뒤쪽 응원석에서 응원해요');
+  if (isOX()) { const h = oxHome(p.seat); ME.goal = { x: h.x, z: h.z, face: Math.PI }; targetRing.position.set(h.x, .03, h.z); targetRing.visible = true; return; }
   const s = seatXZ(p.seat); ME.goal = { x: s.x, z: s.z, face: Math.PI };
   targetRing.position.set(s.x, .03, s.z); targetRing.visible = true;
 }
@@ -1430,6 +1730,7 @@ function updateMe(dt) {
   const locked = lockedAtSeat(p);
   if (locked) { const h = homeOf(p); ME.x = h.x; ME.z = h.z; ME.r = h.r; ME.sit = true; ME.goal = null; targetRing.visible = false; ME.wasLocked = true; return; }
   if (ME.wasLocked) { ME.wasLocked = false; const h = homeOf(p); ME.goal = (!p.alive && S.state.mode === 'elim') ? { x: h.x, z: h.z, face: Math.PI } : null; }
+  if (freezeOn()) { ME.goal = null; targetRing.visible = false; sendPos(); return; }   // 🧊 얼음!
   let ix = 0, iz = 0; const k = ME.keys;
   if (k.arrowup || k.w) iz -= 1; if (k.arrowdown || k.s) iz += 1; if (k.arrowleft || k.a) ix -= 1; if (k.arrowright || k.d) ix += 1;
   ix += ME.joy.x; iz += ME.joy.y;
@@ -1446,13 +1747,15 @@ function updateMe(dt) {
   }
   const sp = 3;
   if (vx || vz) {
-    let nx = clamp(ME.x + vx * sp * dt, -17.2, 17.2), nz = clamp(ME.z + vz * sp * dt, -9.9, 16.4);
-    if (Math.abs(nx) < 1 && nz < -9.5) nz = -9.5;
+    const B = moveBounds(); let nx = clamp(ME.x + vx * sp * dt, -B.x, B.x), nz = clamp(ME.z + vz * sp * dt, B.z0, B.z1);
+    if (!isOX() && Math.abs(nx) < 1 && nz < -9.5) nz = -9.5;
     ME.x = nx; ME.z = nz; ME.r = Math.atan2(vx, vz); ME.sit = false;
   } else {
-    const s = seatXZ(p.seat || 1); ME.sit = p.alive && Math.hypot(ME.x - s.x, ME.z - s.z) < .35;
-    if (ME.sit) { ME.x = s.x; ME.z = s.z; }
+    if (isOX()) ME.sit = false;
+    else { const s = seatXZ(p.seat || 1); ME.sit = p.alive && Math.hypot(ME.x - s.x, ME.z - s.z) < .35; if (ME.sit) { ME.x = s.x; ME.z = s.z; } }
   }
+  // OX : 문제 시간에 ⭕/❌ 구역에 들어가면 그쪽을 고른 것으로 해요
+  if (isOX() && ph() === 'q' && (p.alive || S.state.mode === 'score')) { const z = oxZoneOf(ME.x); if (z !== ME.zone) { ME.zone = z; chooseOX(z, true); } }
   sendPos();
 }
 
@@ -1478,8 +1781,9 @@ function animAvatar(a, p, dt, t) {
   a.sit = lerp(a.sit, sitting ? 1 : 0, Math.min(1, dt * 8));
   const phase = ph(), part = p.alive || S.state.mode === 'score';
   const myAns = S.ansQn === S.state.qn ? S.ans?.[p.id] : null;
-  const raise = (phase === 'reveal' || phase === 'graded') && part;
-  const writing = phase === 'q' && part;
+  const bellG = !isOX();
+  const raise = bellG && (phase === 'reveal' || phase === 'graded') && part;
+  const writing = bellG && phase === 'q' && part;
   a.raise = lerp(a.raise, raise ? 1 : 0, Math.min(1, dt * 6));
   // 답판
   a.board.visible = raise || writing;
@@ -1539,15 +1843,17 @@ function drawScreen() {
   const st = S.state || {}, phs = st.phase || 'wait', g = scrCv.getContext('2d'), W = scrCv.width, H = scrCv.height;
   const left = st.endsAt ? Math.max(0, Math.ceil((st.endsAt - now()) / 1000)) : 0;
   const list = onlineList(), alive = list.filter(p => p.alive).length;
-  const key = [st.title, phs, st.qn, left, list.length, alive, st.mode, st.result?.ok, st.q?.text, st.q?.ans, !!st.q?.img && scrImg.ok, st.teams].join('|');
+  const oc = oxCounts(), key = [st.game, st.gold, st.final, st.flip, oc.o, oc.x, oc.n, freezeOn(), st.oxCount, st.result?.rev, st.title, phs, st.qn, left, list.length, alive, st.mode, st.result?.ok, st.q?.text, st.q?.ans, !!st.q?.img && scrImg.ok, st.teams].join('|');
   if (key === scrKey) return; scrKey = key;
   const grd = g.createLinearGradient(0, 0, 0, H); grd.addColorStop(0, '#0b1d4a'); grd.addColorStop(1, '#16367f'); g.fillStyle = grd; g.fillRect(0, 0, W, H);
-  g.strokeStyle = '#f2b705'; g.lineWidth = 10; g.strokeRect(14, 14, W - 28, H - 28);
+  g.strokeStyle = '#f2b705'; g.lineWidth = st.gold && phs !== 'wait' ? 26 : 10; g.strokeRect(14, 14, W - 28, H - 28);
+  if (st.gold && ['q', 'reveal', 'graded'].includes(phs)) { g.font = '900 34px Pretendard'; g.fillStyle = '#ffd84d'; g.textAlign = 'center'; g.fillText('⭐ 황금 문제 · 맞히면 2점 ⭐', W / 2, 46); }
+  const oxg = st.game === 'ox';
   g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#fff';
   const T2 = (t, y, sz, c = '#fff', w = 900) => { g.font = `${w} ${sz}px Pretendard,sans-serif`; g.fillStyle = c; g.fillText(t, W / 2, y); };
   if (phs === 'wait') {
-    T2(`🔔 ${st.title || '골든벨 3D'} 🔔`, 150, (st.title || '').length > 10 ? 74 : 96, '#ffd84d');
-    T2(st.qn ? `Q${st.qn} 끝! 다음 문제를 기다려요` : '곧 시작해요! 자리에 앉아 주세요', 290, 50);
+    T2(oxg ? `⭕ ${st.title || 'OX 퀴즈'} ❌` : `🔔 ${st.title || '골든벨 3D'} 🔔`, 150, (st.title || '').length > 10 ? 74 : 96, '#ffd84d');
+    T2(st.final ? '🔥 결승전! 마지막까지 살아남아요 🔥' : st.qn ? `Q${st.qn} 끝! 다음 문제를 기다려요` : oxg ? '곧 시작해요! 코트로 모여 주세요' : '곧 시작해요! 자리에 앉아 주세요', 290, 50, st.final ? '#ff8a8a' : '#fff');
     T2(`접속 ${list.length}명 · ${st.mode === 'score' ? '💯 점수형' : `🙋 도전 중 ${alive}명`}`, 400, 44, '#bcd3ff', 700);
   } else if (phs === 'q') {
     g.font = '900 44px Pretendard'; g.fillStyle = '#f2b705'; g.textAlign = 'left'; g.fillText(`Q${st.qn}`, 50, 70); g.textAlign = 'center';
@@ -1562,12 +1868,28 @@ function drawScreen() {
       g.font = '800 58px Pretendard'; const ls = wrapText(g, st.q?.text || '', W - 140).slice(0, 5);
       ls.forEach((l, i) => { g.fillStyle = '#fff'; g.fillText(l, W / 2, 240 + (i - (ls.length - 1) / 2) * 68); });
     }
+    if (oxg) {   // ⭕ / ❌ 지금 인원 (선생님이 켰을 때)
+      if (freezeOn()) T2('🧊 얼음! 🧊', H - 120, 54, '#9be7ff');
+      else if (st.oxCount !== false) { g.font = '900 52px Pretendard'; g.fillStyle = '#7fb2ff'; g.textAlign = 'left'; g.fillText(`⭕ ${oc.o}명`, 70, H - 120); g.fillStyle = '#ff8f8f'; g.textAlign = 'right'; g.fillText(`${oc.x}명 ❌`, W - 70, H - 120); g.textAlign = 'center'; }
+    }
     const pr = st.time ? clamp((st.endsAt - now()) / (st.time * 1000), 0, 1) : 0;
     g.fillStyle = 'rgba(255,255,255,.15)'; g.fillRect(60, H - 70, W - 120, 22); g.fillStyle = left <= 5 ? '#ff6b6b' : '#f2b705'; g.fillRect(60, H - 70, (W - 120) * pr, 22);
   } else if (phs === 'reveal') {
-    T2(`Q${st.qn}`, 110, 60, '#f2b705'); T2('✋ 답판을 번쩍 들어 주세요!', 260, 76); T2('선생님이 채점하고 있어요...', 390, 46, '#bcd3ff', 700);
+    if (oxg) { T2(`Q${st.qn}`, 110, 60, '#f2b705'); T2('두구두구... 정답은?!', 270, 90, '#fff'); T2(`⭕ ${oc.o}명 · ❌ ${oc.x}명`, 410, 52, '#bcd3ff', 800); }
+    else { T2(`Q${st.qn}`, 110, 60, '#f2b705'); T2('✋ 답판을 번쩍 들어 주세요!', 260, 76); T2('선생님이 채점하고 있어요...', 390, 46, '#bcd3ff', 700); }
   } else if (phs === 'graded') {
     T2(`Q${st.qn} 정답`, 90, 50, '#f2b705');
+    if (oxg) {   // 📊 O/X 비율 막대
+      const r0 = st.result || {}, tot = Math.max(1, (r0.o || 0) + (r0.x || 0) + (r0.none || 0)), A = normOX(st.q?.ans);
+      T2(A === 'O' ? '⭕' : '❌', 200, 130, A === 'O' ? '#7fb2ff' : '#ff8f8f');
+      [['⭕', r0.o || 0, '#3b82f6', A === 'O'], ['❌', r0.x || 0, '#ef4444', A === 'X'], ['미선택', r0.none || 0, '#94a3b8', false]].forEach(([lb, n, c, ok], i) => {
+        const y = 300 + i * 52, w = (W - 420) * n / tot; g.fillStyle = 'rgba(255,255,255,.12)'; g.fillRect(260, y, W - 420, 38); g.fillStyle = c; g.fillRect(260, y, w, 38);
+        g.font = '800 34px Pretendard'; g.textAlign = 'right'; g.fillStyle = ok ? '#7ef0a6' : '#fff'; g.fillText(lb + (ok ? ' ✓' : ''), 245, y + 20); g.textAlign = 'left'; g.fillText(`${n}명`, 270 + w, y + 20); g.textAlign = 'center';
+      });
+      const r = st.result || {};
+      T2(st.mode === 'elim' ? (r.safe ? '😅 모두 틀려서 전원 생존!' : `🙋 남은 도전자 ${r.left ?? alive}명${r.rev ? ` · 🔮 부활 ${r.rev}명` : ''}`) : `⭕ ${r.ok || 0}명 정답`, 490, 42, '#ffd84d', 800);
+      scrTex.needsUpdate = true; return;
+    }
     g.font = '900 84px Pretendard'; const al = wrapText(g, (st.q?.ans || '-').split('/')[0], W - 120).slice(0, 2); al.forEach((l, i) => { g.fillStyle = '#7ef0a6'; g.fillText(l, W / 2, 200 + i * 90); });
     if (st.q?.expl) { g.font = '600 38px Pretendard'; wrapText(g, '💡 ' + st.q.expl, W - 140).slice(0, 2).forEach((l, i) => { g.fillStyle = '#dfe8ff'; g.fillText(l, W / 2, 360 + i * 46); }); }
     const r = st.result || {};
@@ -1583,6 +1905,11 @@ function drawScreen() {
   scrTex.needsUpdate = true;
 }
 /* 모둠 순위 : 접속한 모둠원의 평균 점수, 같으면 평균 시간이 짧은 순 */
+function oxCounts() {
+  const o = { o: 0, x: 0, n: 0 }; if (!isOX()) return o;
+  for (const p of onlineList()) if (p.alive || S.state.mode === 'score') { const c = S.ox?.[p.id]?.c; if (c === 'O') o.o++; else if (c === 'X') o.x++; else o.n++; }
+  return o;
+}
 function teamRanking() {
   const n = S.state.teams || 0, out = [];
   for (let t = 1; t <= n; t++) {
@@ -1635,7 +1962,7 @@ function updateFX(dt, t) {
   scrFrameM.color.set(hurry ? (pulse > .5 ? '#ff3b3b' : '#7f1d1d') : '#1e1b18');
   spot.color.set(hurry ? '#ff4d4d' : '#fff1c2'); spot.intensity = hurry ? 25 + 50 * pulse : 40;
   lamps.forEach(s => s.visible = !LITE);
-  drawBanner(st.title || '우리 학교 골든벨'); applyTheme(st.theme);
+  drawBanner(st.title || (isOX() ? '우리 학교 OX 퀴즈' : '우리 학교 골든벨')); applyTheme(st.theme);
 }
 /* 우승자 : 왕관과 금빛 조명 */
 let WIN = new Set();
@@ -1671,8 +1998,8 @@ const VIEWS = {
 };
 let VIEW = 'stage', camAnim = null;
 function viewPose(v) {
-  if (v === 'stage') return { p: [0, 7.4, 12.6], t: [0, 3.9, -9] };
-  if (v === 'students') return { p: [0, 8.5, -13.5], t: [0, .6, -1] };
+  if (v === 'stage') return isOX() ? { p: [0, 11.5, 23], t: [0, 3.2, -8] } : { p: [0, 7.4, 12.6], t: [0, 3.9, -9] };
+  if (v === 'students') return isOX() ? { p: [0, 9, -16], t: [0, 0, 2.5] } : { p: [0, 8.5, -13.5], t: [0, .6, -1] };
   if (v === 'top') {
     const a = innerWidth / innerHeight, tv = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const H = Math.min(85, Math.max(17.5 / tv, 18.5 / (tv * a)) * 1.04); return { p: [0, H, 1 + H * .16], t: [0, 0, 1] };
@@ -1690,12 +2017,28 @@ function cycleView() {
   const list = VIEWS[S.isTeacher ? 'teacher' : 'student'];
   const i = (list.findIndex(x => x[0] === VIEW) + 1) % list.length; setView(list[i][0]); return list[i];
 }
+/* OX 장면 매 프레임 : 시계, 전광판 테두리, 얼음, 결승 조명 */
+let freezeWas = false;
+function oxLoopFX(t) {
+  const d = new Date(); minH.rotation.z = -d.getMinutes() / 60 * Math.PI * 2; hourH.rotation.z = -((d.getHours() % 12) + d.getMinutes() / 60) / 12 * Math.PI * 2;
+  oxFrameM.color.copy(scrFrameM.color);
+  const fr = freezeOn();
+  if (fr && !freezeWas) { SND.tone(1400, .3, 'sine', .15, 0, 2200); toast('🧊 얼음! 이제 움직일 수 없어요'); for (const p of onlineList()) { const a = AV[p.id]; if (a && (p.alive || S.state.mode === 'score') && !a.ice) { a.ice = emojiSprite('🧊', .7); a.ice.position.y = 2.95; a.root.add(a.ice); } } }
+  if (!fr && freezeWas) for (const a of Object.values(AV)) if (a.ice) { a.root.remove(a.ice); a.ice = null; }
+  freezeWas = fr;
+}
+const finalBeamM = new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: .14, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+function finalBeam(a, on) {
+  if (on && !a.finalB) { const b = new THREE.Mesh(new THREE.ConeGeometry(1.2, 9, 24, 1, true), finalBeamM); b.position.y = 4.5; a.root.add(b); a.finalB = b; }
+  if (!on && a.finalB) { a.root.remove(a.finalB); a.finalB = null; }
+}
 function loop() {
   requestAnimationFrame(loop);
   const dt = Math.min(.05, clock.getDelta()), t = clock.elapsedTime;
   if (S.joined) {
     if (!S.isTeacher) updateMe(dt);
-    for (const p of onlineList()) { const a = AV[p.id]; if (a) { animAvatar(a, p, dt, t); crownFor(a, WIN.has(p.id), t); if (a.say) { a.sayT -= dt; if (a.sayT <= 0) { a.root.remove(a.say); a.say = null; } } if (a.cloud) { a.cloudT -= dt; a.cloud.position.y = 3.05 + Math.sin(t * 4) * .06; if (a.cloudT <= 0) { a.root.remove(a.cloud); a.cloud = null; } } } }
+    for (const p of onlineList()) { const a = AV[p.id]; if (a) { animAvatar(a, p, dt, t); crownFor(a, WIN.has(p.id), t); finalBeam(a, !!S.state.final && p.alive && ph() !== 'end'); if (a.say) { a.sayT -= dt; if (a.sayT <= 0) { a.root.remove(a.say); a.say = null; } } if (a.cloud) { a.cloudT -= dt; a.cloud.position.y = 3.05 + Math.sin(t * 4) * .06; if (a.cloudT <= 0) { a.root.remove(a.cloud); a.cloud = null; } } } }
+    applyScene(); setCourtFlip(S.state.flip); updateBalls(dt); oxLoopFX(t);
     animTeacher(dt, t); if (TA.say) { TA.sayT -= dt; if (TA.sayT <= 0) { TA.root.remove(TA.say); TA.say = null; } }
     const mine = AV[S.me];
     if (camAnim) {   // 시점 바꿀 때 부드럽게 이동
@@ -1775,7 +2118,9 @@ $('lookBody').onclick = e => { const b = e.target.closest('[data-k]'); if (!b) r
 $('lookRand').onclick = () => { Object.assign(curLook(), randomLook()); buildLook(); SND.init(); SND.pop(); };
 $('tabS').onclick = () => { moveLook('S'); $('tabS').classList.add('on'); $('tabT').classList.remove('on'); $('formS').hidden = false; $('formT').hidden = true; $('err').textContent = ''; };
 $('tabT').onclick = () => { moveLook('T'); $('tabT').classList.add('on'); $('tabS').classList.remove('on'); $('formS').hidden = true; $('formT').hidden = false; $('err').textContent = ''; };
-let joinMode = 'score';
+let joinMode = 'score', joinGame = localStorage.getItem('gb_game') || 'bell';
+[...$('gameSegJ').children].forEach(x => x.classList.toggle('on', x.dataset.g === joinGame));
+$('gameSegJ').onclick = e => { const b = e.target.closest('button'); if (!b) return; joinGame = b.dataset.g; localStorage.setItem('gb_game', joinGame); [...$('gameSegJ').children].forEach(x => x.classList.toggle('on', x === b)); };
 $('modeSegJ').onclick = e => { const b = e.target.closest('button'); if (!b) return; joinMode = b.dataset.m; [...$('modeSegJ').children].forEach(x => x.classList.toggle('on', x === b)); };
 $('inRoom').value = QS.get('room') || localStorage.getItem('gb_room') || '';
 $('inName').value = localStorage.getItem('gb_name') || '';
@@ -1897,6 +2242,38 @@ function enterGame() {
   S.net.on('notice', v => { if (v && v.ts > S.joinAt - 1000 && v.ts !== S.lastNotice) { S.lastNotice = v.ts; showNotice(v.text); } });
   SND.setBgm('calm');
   startChat();
+  // 🎈 응원석 물풍선 던지기 (화면 효과만)
+  const fxSeen = new Set();
+  S.net.on('fx', v => {
+    const list = Object.entries(v || {});
+    for (const [id, f] of list) if (!fxSeen.has(id)) { fxSeen.add(id); if (f.ts > S.joinAt - 2000 && isOX()) { const a = AV[f.f]; const from = a ? a.root.position.clone().add(new THREE.Vector3(0, 2.2, 0)) : new THREE.Vector3(0, 3, 12); const z = oxZonePoint(f.side); dropBalloon(new THREE.Vector3(z.x, .3, z.z), 0, from); } }
+    if (S.isTeacher && list.length > 40) { const up = {}; list.sort((a, b) => a[1].ts - b[1].ts).slice(0, list.length - 20).forEach(([id]) => up['fx/' + id] = null); S.net.update('', up); }
+  });
+  if (S.isTeacher) { try { S.stats = JSON.parse(localStorage.getItem('gb_stats:' + S.room) || '[]'); } catch (e) { S.stats = []; } }
+}
+/* ---------- OX : 고르기 ---------- */
+const canPredict = () => { const p = meP(); return !!p && !p.alive && S.state.mode === 'elim' && S.state.predict !== false; };
+async function chooseOX(z, viaMove) {
+  if (!isOX() || ph() !== 'q' || S.isTeacher || freezeOn()) return;
+  if (now() > S.state.endsAt) return;
+  const part = participating(); if (!part && !canPredict()) return;
+  if (!viaMove && part && z) { const pt = oxZonePoint(z); ME.zone = z; ME.goal = { x: pt.x, z: pt.z, face: Math.PI }; targetRing.position.set(pt.x, .03, pt.z); targetRing.visible = true; }
+  if ((S.ox?.[S.me]?.c || null) === z) return;
+  await S.net.set(`ox/${S.state.qn}/${S.me}`, z ? { c: z, ts: now() } : null);
+  if (!viaMove) SND.click();
+}
+$('oxBar').onclick = e => {
+  const b = e.target.closest('[data-ox]'); if (b) return chooseOX(b.dataset.ox, false);
+  const th = e.target.closest('[data-throw]');
+  if (th && !S.threw && ph() === 'q') { S.threw = true; S.net.set('fx/' + Date.now().toString(36) + rid(3), { f: S.me, side: th.dataset.throw, ts: now() }); SND.pop(); toast('🎈 휙~!'); }
+};
+function renderOXBar() {
+  const show = isOX() && ph() === 'q' && !S.isTeacher && S.joined && (participating() || canPredict());
+  $('oxBar').hidden = !show; document.body.classList.toggle('oxq', show); if (!show) return;
+  const fr = freezeOn(), mine = S.ox?.[S.me]?.c, pred = !participating();
+  $('oxBar').querySelectorAll('.oxb').forEach(b => { b.disabled = fr; b.classList.toggle('on', b.dataset.ox === mine); });
+  $('oxTip').textContent = fr ? '🧊 얼음! 이제 바꿀 수 없어요' : pred ? `🔮 응원석 예측 (${meP()?.pc || 0}/2) · 2번 맞히면 부활!` : mine ? `${mine === 'O' ? '⭕' : '❌'} 쪽을 골랐어요 · 시간 안에는 바꿀 수 있어요` : '⭕ 또는 ❌ 쪽으로 가요!';
+  $('oxThrow').hidden = !pred || S.threw;
 }
 function subAns(qn) {
   if (S.ansQn === qn) return;
@@ -1904,6 +2281,7 @@ function subAns(qn) {
   // 답판 그림은 선생님 화면만 모두 받고, 학생은 '누가 냈는지'와 자기 답판만 받아요 (Firebase 다운로드 절약)
   if (S.isTeacher) S.offAns = S.net.on('ans/' + qn, v => { S.ans = v || {}; if (!$('gal').hidden) renderGallery(); checkAllSubmitted(); });
   else S.offAns = S.net.on(`ans/${qn}/${S.me}`, v => { S.ans = v ? { [S.me]: v } : {}; });
+  S.offOx?.(); S.ox = {}; S.offOx = S.net.on('ox/' + qn, v => { S.ox = v || {}; if (!$('gal').hidden) renderGallery(); });
   S.offSub?.(); S.sub = {}; S.offSub = S.net.on('sub/' + qn, v => { S.sub = v || {}; });
   S.offChance?.(); S.chance = {}; S.offChance = S.net.on('chance/' + qn, v => { S.chance = v || {}; if (S.isTeacher) { T.answerHints(); if (!$('gal').hidden) renderGallery(); } else renderCards(); });
   S.offHint?.(); S.hints = {}; S.offHint = S.net.on('hint/' + qn, v => { S.hints = v || {}; if (!S.isTeacher) showHint(); });
@@ -1916,12 +2294,14 @@ function onState(prev, v) {
   if (newQ) {
     SND.start(); ringBell(.25); SND.setBgm('tense'); S.mySubmitted = false; S.autoSent = false;
     toast(`🔔 Q${v.qn} 시작!`);
-    if (!S.isTeacher && participating()) openEditor('ans');
+    S.partAtQ = participating(); S.threw = false; ME.zone = undefined;
+    if (!S.isTeacher && participating() && !isOX()) openEditor('ans');
+    if (!S.isTeacher && isOX()) toast(participating() ? '⭕ 또는 ❌ 쪽으로 이동하거나 아래 버튼을 눌러요' : canPredict() ? '🔮 응원석에서 예측해요! 2번 맞히면 부활' : '📣 친구들을 응원해요');
   }
   if (p0 === 'q' && p1 !== 'q') { if (!S.isTeacher && ED.mode === 'ans') closeEditor(); }
   if (p1 === 'reveal' && p0 !== 'reveal') {
     SND.up(); SND.setBgm('');
-    if (S.isTeacher) { showFronts(); toast('✋ 학생들이 답판을 들었어요! 둘러본 뒤 🧑‍⚖️ 채점하기를 누르세요', 4000); }
+    if (S.isTeacher) { showFronts(); if (!isOX()) toast('✋ 학생들이 답판을 들었어요! 둘러본 뒤 🧑‍⚖️ 채점하기를 누르세요', 4000); }
     else toast('✋ 답판을 번쩍!');
   }
   if (S.isTeacher && newQ && VIEW === 'students') setView('stage');   // 새 문제가 나오면 다시 무대·전광판 쪽으로
@@ -1929,6 +2309,9 @@ function onState(prev, v) {
   if (p1 === 'wait' && p0 && p0 !== 'wait') { SND.setBgm('calm'); $('gal').hidden = true; }
   if (p1 === 'end' && p0 !== 'end') { SND.setBgm(''); SND.fanfare(); ringBell(1); confetti(); setTimeout(showRanking, 900); }
   if (p1 !== 'end') $('rank').hidden = true;
+  if (v.final && !prev.final && p1 !== 'end') { toast('🔥 결승전! 마지막까지 살아남아요', 3500); SND.fanfare(); }
+  if (v.shots && v.shots.ts !== prev.shots?.ts && v.shots.ts > S.joinAt - 2000) playShots(v.shots);
+  if (v.game !== prev.game) { tbarKey = ''; if (S.isTeacher && !$('tpanel').hidden && !document.querySelector('section[data-p="bank"]').hidden) renderBank(); }
   if (v.revive && prev.revive && v.revive !== prev.revive) { if (!S.isTeacher) toast('✨ 패자부활! 모두 다시 도전해요'); SND.ok(); }
   if (v.mode !== prev.mode || v.teams !== prev.teams) { syncAvatars(); renderRoster(); }
   checkTeam(); if (!$('ed').hidden) renderCards(); renderChat();
@@ -1943,14 +2326,21 @@ function checkAllSubmitted() {
   if (!cand.length || S.allSubQn === S.state.qn) return;
   if (cand.every(p => S.ans[p.id])) { S.allSubQn = S.state.qn; showFronts(); toast('✅ 모두 답판을 냈어요! ⏹ 지금 마감을 눌러도 돼요', 3500); }
 }
+function playShots(sh) {
+  sh.list.forEach((s, i) => setTimeout(() => {
+    const a = AV[s.id]; if (a) shootBall(a, s.made);
+    setTimeout(() => toast(`🏀 ${S.players[s.id]?.name || '친구'} ${s.made ? '슛 성공! +1점' : '아깝다! 안 들어갔어요'}`, 2200), 1300);
+  }, i * 1300));
+}
 function participating() { const p = meP(); return !!p && (p.alive || S.state.mode === 'score'); }
 function checkMyResult() {
   if (S.isTeacher || ph() !== 'graded' || !S.grade) return;
   const k = S.state.qn + ':' + (S.state.gradeV || 0); if (S.resultShown === k) return;
   if (!(S.me in S.grade)) return; S.resultShown = k;
   const ok = S.grade[S.me];
+  if (S.partAtQ === false && S.state.mode === 'elim') { if (ok) { SND.ok(); toast(`🔮 예측 성공! ${meP()?.alive ? '' : `(${meP()?.pc || 1}/2) 한 번 더 맞히면 부활!`}`, 3200); } else { SND.no(); toast('🔮 예측 실패! 다음 문제에 다시 도전해요'); } return; }
   if (S.state.result?.re) { toast(`✏️ 선생님이 Q${S.state.qn} 채점을 고쳤어요 → ${ok ? '⭕ 정답' : '❌ 오답'}`, 3500); if (ok) SND.ok(); return; }
-  if (ok) { SND.ok(); const sec = S.timeMap?.[S.me]; toast(`⭕ 정답! ${S.chance?.[S.me] === 'double' ? '✌️ 2점 획득!' : '잘했어요'}${sec != null ? ` (⏱ ${sec}초)` : ''}`); confetti(60); ringBell(.4); doEmote(2); }
+  if (ok) { SND.ok(); const sec = S.timeMap?.[S.me]; toast(`⭕ 정답! ${S.state.gold ? '⭐ 황금 문제 ' : ''}${(S.state.gold ? 2 : 1) * (S.chance?.[S.me] === 'double' ? 2 : 1) > 1 ? `+${(S.state.gold ? 2 : 1) * (S.chance?.[S.me] === 'double' ? 2 : 1)}점!` : '잘했어요'}${sec != null ? ` (⏱ ${sec}초)` : ''}`); confetti(60); ringBell(.4); doEmote(2); }
   else {
     SND.no();
     if (S.state.mode === 'elim' && !S.state.result?.safe && S.chance?.[S.me] === 'shield') toast('🛡 방패 카드 덕분에 살아남았어요!', 3200);
@@ -1973,6 +2363,9 @@ function renderQbar() {
     $('acAns').textContent = (st.q?.ans || '(선생님 판단)').split('/')[0];
     $('acExpl').textContent = st.q?.expl ? '💡 ' + st.q.expl : '';
     $('acExpl').hidden = !st.q?.expl;
+    const r = st.result || {};
+    if (isOX()) $('acAns').textContent = normOX(st.q?.ans) === 'O' ? '⭕ 맞다' : normOX(st.q?.ans) === 'X' ? '❌ 틀리다' : $('acAns').textContent;
+    $('acStat').textContent = isOX() ? `📊 ⭕ ${r.o || 0}명 · ❌ ${r.x || 0}명 · 미선택 ${r.none || 0}명${r.rev ? ` · 🔮 부활 ${r.rev}명` : ''}${st.gold ? ' · ⭐ 황금 문제' : ''}` : `📊 정답 ${r.ok || 0}명 · 오답 ${r.no || 0}명${r.rev ? ` · 🔮 부활 ${r.rev}명` : ''}${st.gold ? ' · ⭐ 황금 문제' : ''}`;
   }
 }
 let lastSec = -1, botT = 0;
@@ -1989,9 +2382,12 @@ function tickUI() {
   // 떠 있는 버튼
   const fb = $('floatBtn');
   if (S.isTeacher || !$('ed').hidden) fb.hidden = true;
+  else if (isOX() && phs === 'q') fb.hidden = true;
   else if (phs === 'q' && participating() && now() < st.endsAt - 300) { fb.hidden = false; fb.textContent = S.mySubmitted ? '✏️ 답 고치기' : '✏️ 답판 쓰기'; fb.dataset.m = 'ans'; }
+  else if (phs === 'q' && canPredict() && now() < st.endsAt - 300) { fb.hidden = false; fb.textContent = `🔮 예측 답판 쓰기 (${meP()?.pc || 0}/2 · 2번 맞히면 부활)`; fb.dataset.m = 'ans'; }
   else if (meP() && !meP().alive && st.mode === 'elim') { fb.hidden = false; fb.textContent = '📣 응원 팻말 만들기'; fb.dataset.m = 'cheer'; }
   else fb.hidden = true;
+  renderOXBar();
   if (S.isTeacher) { renderTbar(); if ((botT += 1) % 10 === 0) Bots.emote(); }
 }
 $('floatBtn').onclick = () => openEditor($('floatBtn').dataset.m);
@@ -2001,7 +2397,7 @@ function renderRoster() {
   const list = onlineList().concat(playerList().filter(p => !p.on && !p.bot));
   const score = S.state.mode === 'score';
   const tc = p => S.state.teams && p.team ? `<span class="tchip" style="background:${TEAM_C[(p.team - 1) % 8]}">${p.team}</span>` : '';
-  const row = p => `<div class="${p.id === S.me ? 'me' : ''} ${p.on || p.bot ? '' : 'off'}"><i style="background:${esc(p.color)}"></i>${p.seat || '-'}. ${tc(p)}${esc(p.name)}${score ? `<span class="sc">${p.score || 0}점 ${(p.tsum || 0).toFixed(0)}초</span>` : ''}</div>`;
+  const row = p => `<div class="${p.id === S.me ? 'me' : ''} ${p.on || p.bot ? '' : 'off'}"><i style="background:${esc(p.color)}"></i>${p.seat || '-'}. ${tc(p)}${esc(p.name)}${!p.alive && p.pc ? ` <span title="예측 성공">🔮${p.pc}/2</span>` : ''}${score ? `<span class="sc">${p.score || 0}점 ${(p.tsum || 0).toFixed(0)}초</span>` : ''}</div>`;
   const alive = list.filter(p => score || p.alive).sort((a, b) => score ? ((b.score || 0) - (a.score || 0) || (a.tsum || 0) - (b.tsum || 0)) : (a.seat || 99) - (b.seat || 99));
   const out = list.filter(p => !score && !p.alive).sort((a, b) => (a.seat || 99) - (b.seat || 99));
   $('rAliveH').firstChild.textContent = score ? '💯 점수 ' : '🙋 도전 중 ';
@@ -2028,6 +2424,26 @@ function showRanking() {
   if (!S.isTeacher && winners.some(p => p.id === S.me)) { doEmote(2); toast('🎉 골든벨을 울렸어요!'); }
 }
 $('rankClose').onclick = () => $('rank').hidden = true;
+/* 📸 기념사진 : 무대 정면에서 찍어 제목·우승자를 넣고 저장해요 */
+$('photoBtn').onclick = () => {
+  $('rank').hidden = true; setView('stage'); toast('📸 찰칵 준비...');
+  setTimeout(() => {
+    renderer.render(scene, camera);
+    const shot = new Image(); shot.onload = () => {
+      const c = document.createElement('canvas'); c.width = shot.width; c.height = shot.height; const g = c.getContext('2d'); g.drawImage(shot, 0, 0);
+      const W = c.width, H = c.height, k = W / 1400;
+      g.fillStyle = 'rgba(30,27,24,.72)'; g.fillRect(0, 0, W, 90 * k); g.fillRect(0, H - 110 * k, W, 110 * k);
+      g.fillStyle = '#ffd84d'; g.font = `900 ${44 * k}px Pretendard,sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(`${isOX() ? '⭕❌' : '🔔'} ${S.state.title || (isOX() ? 'OX 퀴즈' : '골든벨')} · ${new Date().toLocaleDateString('ko-KR')}`, W / 2, 46 * k);
+      const rk = ranking().slice(0, 3);
+      g.fillStyle = '#fff'; g.font = `800 ${34 * k}px Pretendard,sans-serif`;
+      g.fillText(rk.length ? '🏆 ' + rk.map((p, i) => `${['🥇', '🥈', '🥉'][i]} ${p.name}`).join('   ') : '🏆 모두 수고했어요!', W / 2, H - 55 * k);
+      const a = document.createElement('a'); a.href = c.toDataURL('image/png'); a.download = `${isOX() ? 'OX퀴즈' : '골든벨'}_기념사진_${new Date().toISOString().slice(0, 10)}.png`; a.click();
+      SND.tone(1200, .08, 'square', .1); toast('📸 기념사진을 저장했어요');
+    };
+    shot.src = renderer.domElement.toDataURL('image/png');
+  }, 1800);
+};
 
 /* =========================================================
    그리기 창 (답판 · 응원 팻말)
@@ -2055,7 +2471,7 @@ ec.addEventListener('pointermove', e => { if (!ED.cur) return; const evs = e.get
 function openEditor(mode) {
   SND.init();
   if (mode === 'ans') {
-    if (ph() !== 'q' || !participating()) return;
+    if (ph() !== 'q' || (!participating() && !canPredict()) || isOX()) return;
     if (ED.mode !== 'ans' || ED.qn !== S.state.qn) { ED.strokes = []; ED.qn = S.state.qn; }
     ED.bg = '#ffffff'; $('edTitle').textContent = `Q${S.state.qn}. ${S.state.q?.text || ''}`; $('edSubmit').textContent = '✋ 답판 제출';
     $('edBgRow').hidden = true;
@@ -2092,7 +2508,7 @@ async function submitEditor(auto) {
 const CARDS = { double: ['✌️ 2배', '맞히면 2점'], shield: ['🛡 방패', '틀려도 탈락 안 함'], hint: ['💡 보기 지우기', '틀린 보기 하나 지우기'] };
 function renderCards() {
   const box = $('edCards'), st = S.state, me = meP();
-  if (S.isTeacher || ED.mode !== 'ans' || !st.cards || !me) { box.innerHTML = ''; return; }
+  if (S.isTeacher || ED.mode !== 'ans' || !st.cards || !me || !participating()) { box.innerHTML = ''; return; }
   const usedNow = S.chance?.[S.me];
   const avail = Object.keys(CARDS).filter(k => k !== 'shield' || st.mode === 'elim');
   box.innerHTML = '<b>🃏 찬스 카드 (게임당 한 장씩)</b>' + avail.map(k => {
@@ -2129,7 +2545,7 @@ $('edSubmit').onclick = () => submitEditor(false);
 /* =========================================================
    채점 갤러리 (교사)
    ========================================================= */
-function galCands() { return onlineList().filter(p => S.state.mode === 'score' || p.alive).sort((a, b) => (a.seat || 99) - (b.seat || 99)); }
+function galCands() { return onlineList().filter(p => S.state.mode === 'score' || p.alive || (S.state.mode === 'elim' && S.state.predict !== false && (isOX() ? S.ox?.[p.id]?.c : S.ans?.[p.id]))).sort((a, b) => (a.alive === false) - (b.alive === false) || (a.seat || 99) - (b.seat || 99)); }
 function galSec(a) { const st = S.state, s0 = st.startAt || (st.endsAt - (st.time || 0) * 1000); return a.ts ? '⏱ ' + clamp((a.ts - s0) / 1000, 0, st.time || 60).toFixed(1) + '초' : ''; }
 const canRegrade = () => ['graded', 'wait'].includes(S.state.phase) && S.lastGrade && S.lastGrade.qn === S.state.qn && S.lastGrade.room === S.room;
 function galList() {
@@ -2156,8 +2572,8 @@ function renderGallery() {
   $('galGrid').innerHTML = list.map(p => {
     const a = S.ans[p.id], m = editing ? marks[p.id] : S.grade?.[p.id];
     return `<div class="gc ${m === true ? 'ok' : m === false ? 'no' : ''}" data-id="${esc(p.id)}">
-      <div class="nm"><span>${p.seat || '-'}. ${esc(p.name)}</span><span>${a ? galSec(a) : '미제출'}</span></div>
-      ${a ? `<img src="${a.img}" alt="">` : '<div class="empty">답판 없음</div>'}
+      <div class="nm"><span>${p.seat || '-'}. ${esc(p.name)} ${S.state.mode === 'elim' && p.alive === false && (ph() === 'reveal' || (S.lastGrade?.qn === S.state.qn && (S.lastGrade.pred || []).includes(p.id))) ? '<span class="pred">🔮 예측</span>' : ''}</span><span>${isOX() ? (S.ox?.[p.id]?.c ? galSec(S.ox[p.id]) : '미선택') : a ? galSec(a) : '미제출'}</span></div>
+      ${isOX() ? `<div class="oxc">${S.ox?.[p.id]?.c === 'O' ? '⭕' : S.ox?.[p.id]?.c === 'X' ? '❌' : '—'}</div>` : a ? `<img src="${a.img}" alt="">` : '<div class="empty">답판 없음</div>'}
       <div class="tx">${S.chance?.[p.id] ? CARDS[S.chance[p.id]][0] + ' 카드 사용' : ''}</div>
       ${editing ? '<div class="ox"><button class="o">⭕ 정답</button><button class="x">❌ 오답</button></div>' : ''}</div>`;
   }).join('') || '<div style="color:#a39584">참여한 학생이 없어요</div>';
@@ -2193,15 +2609,15 @@ let tbarKey = '';
 function renderTbar(force) {
   const st = S.state, phs = st.phase || 'wait';
   const list = onlineList(), cand = list.filter(p => st.mode === 'score' || p.alive);
-  const sub = Object.keys(S.ans || {}).filter(id => cand.some(p => p.id === id)).length;
+  const sub = Object.keys(isOX() ? (S.ox || {}) : (S.ans || {})).filter(id => cand.some(p => p.id === id)).length;
   const left = phs === 'q' ? Math.max(0, Math.ceil((st.endsAt - now()) / 1000)) : 0;
-  const status = phs === 'q' ? `Q${st.qn} · ⏱ ${left}초 · 제출 ${sub}/${cand.length}` : phs === 'reveal' ? `Q${st.qn} 마감 · 제출 ${sub}/${cand.length}` : phs === 'graded' ? `Q${st.qn} 채점 끝 · ${st.mode === 'elim' ? '도전 중 ' + list.filter(p => p.alive).length + '명' : '점수형'}` : phs === 'end' ? '🏆 게임 종료' : `대기 중 · 접속 ${list.length}명`;
+  const status = (isOX() ? '⭕❌ ' : '🔔 ') + (phs === 'q' ? `Q${st.qn} · ⏱ ${left}초 · 제출 ${sub}/${cand.length}` : phs === 'reveal' ? `Q${st.qn} 마감 · 제출 ${sub}/${cand.length}` : phs === 'graded' ? `Q${st.qn} 채점 끝 · ${st.mode === 'elim' ? '도전 중 ' + list.filter(p => p.alive).length + '명' : '점수형'}` : phs === 'end' ? '🏆 게임 종료' : `대기 중 · 접속 ${list.length}명`);
   const key = phs + '|' + st.qn + '|' + (S.queue ? S.queue.tab + S.queue.idx : '');
   if (!force && key === tbarKey) { const s = $('tbar').querySelector('.st'); if (s) s.textContent = status; return; }
   tbarKey = key;
   let b = `<button data-a="menu">👩‍🏫 메뉴</button><span class="st">${esc(status)}</span>`;
   if (phs === 'q') b += `<button data-a="plus">⏱ +10초</button><button class="red" data-a="stop">⏹ 지금 마감</button>`;
-  else if (phs === 'reveal') b += `<button class="gold pulse" data-a="gal">🧑‍⚖️ 채점하기</button>`;
+  else if (phs === 'reveal') b += isOX() ? '<span class="st">⏳ 자동 채점 중...</span>' : `<button class="gold pulse" data-a="gal">🧑‍⚖️ 채점하기</button>`;
   else {
     if (phs === 'graded') b += `<button data-a="gal">🔍 답판 · ✏️ 채점 고치기</button>`;
     const nx = nextInfo(); if (nx) b += nx.done ? `<button disabled style="opacity:.5">🏁 ${esc(nx.name)} 끝</button>` : `<button class="gold" data-a="next">▶ 다음 문제 (${nx.i + 1}/${nx.n})</button>`;
@@ -2219,10 +2635,10 @@ $('tbar').onclick = e => {
    교사 메뉴
    ========================================================= */
 /* 다음 문제 : 문제 은행에서 마지막으로 낸 문제의 다음 문제 */
-function queueArr(q) { return q.tab === 'base' ? BANK_BASE : (S.sets[+q.tab.slice(1)]?.items || []); }
+function queueArr(q) { return q.tab === 'base' ? BANK_BASE : q.tab === 'baseox' ? BANK_OX : (S.sets[+q.tab.slice(1)]?.items || []); }
 function nextInfo() {
   const q = S.queue; if (!q) return null; const arr = queueArr(q); if (!arr.length) return null;
-  const name = q.tab === 'base' ? '열역학' : (S.sets[+q.tab.slice(1)]?.name || '세트');
+  const name = q.tab === 'base' ? '열역학' : q.tab === 'baseox' ? '열기관 OX' : (S.sets[+q.tab.slice(1)]?.name || '세트');
   return { i: q.idx + 1, n: arr.length, done: q.idx + 1 >= arr.length, name };
 }
 async function askNext() {
@@ -2272,6 +2688,17 @@ $('stuList').onclick = async e => {
   if (b.dataset.skick && await confirmBox('🚪', `「${p.name}」 학생을 내보낼까요?`, '점수와 기록이 지워지고 학생 화면은 첫 화면으로 돌아가요. 같은 이름으로 다시 들어오면 새로 시작해요.', [['취소', 'light', false], ['내보내기', 'red', true]])) { T.kick(id); toast('🚪 내보냈어요'); }
 };
 $('stuList').onchange = e => { const s = e.target.closest('[data-steam]'); if (s) { T.setTeam(s.dataset.steam, +s.value || 0); toast('👥 모둠을 바꿨어요'); } };
+function renderStats() {
+  const s = S.stats || [];
+  $('statList').innerHTML = s.length ? s.map(r => `<div class="stat-row"><b>Q${r.qn}</b><span>${esc(r.q)}${r.ox ? ` <small>(⭕${r.o} · ❌${r.x}${r.none ? ` · 미선택 ${r.none}` : ''})</small>` : ''}</span><span class="bar" title="정답률"><i style="width:${r.n ? Math.round(r.ok / r.n * 100) : 0}%"></i></span></div>`).join('').replace(/<\/span><\/div>/g, '</span></div>') + `<div style="font-size:12px;color:#6b5d4f;margin-top:6px">막대 = 정답률 · 마우스를 올리면 문제를 볼 수 있어요</div>` : '<div style="color:#a39584">아직 채점한 문제가 없어요</div>';
+  $('statList').querySelectorAll('.stat-row').forEach((el, i) => { const r = s[i]; el.querySelector('.bar').title = `정답률 ${r.n ? Math.round(r.ok / r.n * 100) : 0}% (${r.ok}/${r.n}명)`; });
+}
+$('gameSeg').onclick = e => { const b = e.target.closest('[data-g]'); if (b) T.setGame(b.dataset.g); };
+$('tgPredict').onclick = () => T.setOpt('predict', S.state.predict === false);
+$('tgFreeze').onclick = () => T.setOpt('freeze', S.state.freeze === false);
+$('tgFlip').onclick = () => T.setOpt('flipOn', !S.state.flipOn);
+$('tgOxCount').onclick = () => T.setOpt('oxCount', S.state.oxCount === false);
+$('tgShots').onclick = () => T.setOpt('shotsOn', S.state.shotsOn === false);
 function renderTStat() {
   const list = onlineList(), st = S.state;
   const PH = { wait: '대기', q: '문제 중', reveal: '채점 전', graded: '채점 끝', end: '종료' };
@@ -2281,6 +2708,9 @@ function renderTStat() {
   $('tgSafe').classList.toggle('on', st.safe !== false);
   $('teamSeg').innerHTML = TEAM_OPTS.map(n => `<button data-n="${n}" class="${(st.teams || 0) === n ? 'on' : ''}">${n ? n + '모둠' : '끄기'}</button>`).join('');
   $('tgCards').classList.toggle('on', !!st.cards); renderChatSet();
+  $('tgPredict').classList.toggle('on', st.predict !== false); $('tgFreeze').classList.toggle('on', st.freeze !== false); $('tgFlip').classList.toggle('on', !!st.flipOn); $('tgOxCount').classList.toggle('on', st.oxCount !== false); $('tgShots').classList.toggle('on', st.shotsOn !== false);
+  [...$('gameSeg').children].forEach(b => b.classList.toggle('on', b.dataset.g === (st.game || 'bell')));
+  syncWriteForm(); renderStats();
   [...$('themeSeg').children].forEach(b => b.classList.toggle('on', b.dataset.th === (st.theme || 'day')));
   if (document.activeElement !== $('titleIn')) $('titleIn').value = st.title || '';
   $('tOnline').textContent = list.length; renderStu();
@@ -2300,30 +2730,35 @@ let wImgData = null, mImgData = null;
 $('wImg').onchange = async e => { const f = e.target.files[0]; if (!f) return; wImgData = await shrinkImage(f); $('wImgPv').src = wImgData; $('wImgPv').hidden = $('wImgDel').hidden = false; };
 $('wImgDel').onclick = () => { wImgData = null; $('wImg').value = ''; $('wImgPv').hidden = $('wImgDel').hidden = true; };
 $('mImg').onchange = async e => { const f = e.target.files[0]; if (!f) return; mImgData = await shrinkImage(f); $('mImgPv').src = mImgData; $('mImgPv').hidden = false; };
+$('wOX').onclick = e => { const b = e.target.closest('button'); if (b) [...$('wOX').children].forEach(x => x.classList.toggle('on', x === b)); };
+function syncWriteForm() { $('wAbox').hidden = isOX(); $('wOXbox').hidden = !isOX(); }
 $('wGo').onclick = async () => {
   const q = $('wQ').value.trim(), a = $('wA').value.trim(), e = $('wE').value.trim();
   if (!q) return toast('문제를 적어 주세요');
-  const item = { q, a, e, k: a ? 'short' : 'draw', time: wTime, img: wImgData || undefined };
-  if ($('wSave').checked) { const set = S.sets[+$('wSet').value] || S.sets[0]; set.items.push({ q, a, e, k: item.k, img: item.img }); saveLocal(); renderSets(); }
-  if (await T.ask(item)) { $('wQ').value = $('wA').value = $('wE').value = ''; $('wImgDel').click(); }
+  const ox = isOX(), oxA = $('wOX').querySelector('.on')?.dataset.a;
+  if (ox && !oxA) return toast('정답 ⭕ / ❌ 를 골라 주세요');
+  const item = { q, a: ox ? oxA : a, e, k: ox ? 'ox' : a ? 'short' : 'draw', time: wTime, img: wImgData || undefined, gold: $('wGold').checked };
+  if ($('wSave').checked) { const set = S.sets[+$('wSet').value] || S.sets[0]; set.items.push({ q, a: item.a, e, k: item.k, img: item.img }); saveLocal(); renderSets(); }
+  if (await T.ask(item)) { $('wQ').value = $('wA').value = $('wE').value = ''; $('wImgDel').click(); $('wGold').checked = false; [...$('wOX').children].forEach(x => x.classList.remove('on')); }
 };
 
 /* ---------- 문제 은행 : 기본(열역학) + 문제 세트들 ---------- */
 let bankTab = 'base', hideAns = false, curSet = clamp(+localStorage.getItem('gb_curset') || 0, 0, Math.max(0, S.sets.length - 1));
 $('hideAns').onclick = () => { hideAns = !hideAns; $('hideAns').textContent = hideAns ? '👀 정답 보기' : '🙈 정답 가리기'; renderBank(); };
-const bankArr = () => bankTab === 'base' ? BANK_BASE : (S.sets[+bankTab.slice(1)]?.items || []);
+const bankArr = () => bankTab === 'base' ? BANK_BASE : bankTab === 'baseox' ? BANK_OX : (S.sets[+bankTab.slice(1)]?.items || []);
 function renderBank() {
-  if (bankTab !== 'base' && !S.sets[+bankTab.slice(1)]) bankTab = 'base';
-  $('bankTabs').innerHTML = `<button data-b="base" class="${bankTab === 'base' ? 'on' : ''}">📚 기본: 열역학</button>` + S.sets.map((s, i) => `<button data-b="s${i}" class="${bankTab === 's' + i ? 'on' : ''}">⭐ ${esc(s.name)} ${s.items.length}</button>`).join('');
+  if (bankTab.startsWith('s') && !S.sets[+bankTab.slice(1)]) bankTab = 'base';
+  if (isOX() && bankTab === 'base') bankTab = 'baseox'; if (!isOX() && bankTab === 'baseox') bankTab = 'base';
+  $('bankTabs').innerHTML = (isOX() ? `<button data-b="baseox" class="${bankTab === 'baseox' ? 'on' : ''}">⭕❌ 기본: 열기관·제2법칙</button>` : `<button data-b="base" class="${bankTab === 'base' ? 'on' : ''}">📚 기본: 열역학</button>`) + S.sets.map((s, i) => `<button data-b="s${i}" class="${bankTab === 's' + i ? 'on' : ''}">⭐ ${esc(s.name)} ${s.items.length}</button>`).join('');
   $('qlist').classList.toggle('hideAns', hideAns);
-  const own = bankTab !== 'base';
-  $('qlist').innerHTML = bankArr().map((it, i) => `<div class="qi ${S.used.has(it.q) ? 'used' : ''}"><div class="tx">${it.img ? '<span class="k">🖼 그림</span>' : ''}${esc(it.q)}<div class="ans">정답: ${esc(it.a || '(교사 판단)')}${it.e ? ' · ' + esc(it.e) : ''}${it.time ? ` · ⏱ ${it.time}초` : ''}</div></div>
-    ${own ? `<button class="sbtn light" data-del="${i}">🗑</button>` : ''}<button class="sbtn gold" data-go="${i}">▶ 출제</button></div>`).join('') || '<div style="color:#a39584;padding:20px;text-align:center">이 세트에 문제가 없어요. ➕ 문제 세트 메뉴에서 추가해요</div>';
+  const own = bankTab.startsWith('s');
+  $('qlist').innerHTML = bankArr().map((it, i) => `<div class="qi ${S.used.has(it.q) ? 'used' : ''}"><div class="tx">${it.img ? '<span class="k">🖼 그림</span>' : ''}${esc(it.q)}<div class="ans">${it.k === 'ox' ? '<span class="k">⭕❌ OX</span>' : ''}정답: ${esc(it.k === 'ox' ? (normOX(it.a) === 'O' ? '⭕' : '❌') : it.a || '(교사 판단)')}${it.e ? ' · ' + esc(it.e) : ''}${it.time ? ` · ⏱ ${it.time}초` : ''}</div></div>
+    ${own ? `<button class="sbtn light" data-del="${i}">🗑</button>` : ''}${isOX() && it.k !== 'ox' ? '<button class="sbtn light" disabled title="정답이 O/X인 문제만 낼 수 있어요">골든벨용</button>' : `<button class="sbtn gold" data-go="${i}">▶ 출제</button>`}</div>`).join('') || '<div style="color:#a39584;padding:20px;text-align:center">이 세트에 문제가 없어요. ➕ 문제 세트 메뉴에서 추가해요</div>';
 }
 $('bankTabs').onclick = e => { const b = e.target.closest('[data-b]'); if (b) { bankTab = b.dataset.b; renderBank(); } };
 $('qlist').onclick = async e => {
   const arr = bankArr(), go = e.target.closest('[data-go]'), del = e.target.closest('[data-del]');
-  if (go) { const i = +go.dataset.go, it = arr[i]; if (await T.ask({ ...it, time: it.time || S.defTime })) { S.queue = { tab: bankTab, idx: i }; renderTbar(true); } }
+  if (go) { const i = +go.dataset.go, it = arr[i]; if (await T.ask({ ...it, time: it.time || S.defTime, gold: $('bankGold').checked })) { S.queue = { tab: bankTab, idx: i }; $('bankGold').checked = false; renderTbar(true); } }
   if (del) { arr.splice(+del.dataset.del, 1); saveLocal(); renderBank(); renderSets(); }
 };
 
@@ -2335,7 +2770,7 @@ function renderSets() {
   $('setSel').innerHTML = opts; $('wSet').innerHTML = opts;
   const set = S.sets[curSet];
   $('setInfo').textContent = `「${set.name}」 세트 · ${set.items.length}문제`;
-  $('setList').innerHTML = set.items.map((it, i) => `<div class="qi"><div class="tx">${it.img ? `<img src="${it.img}" style="height:40px;vertical-align:middle;border-radius:6px;margin-right:6px">` : ''}${esc(it.q)}<div class="ans">정답: ${esc(it.a || '(교사 판단)')}${it.e ? ' · ' + esc(it.e) : ''}${it.time ? ` · ⏱ ${it.time}초` : ''}</div></div>
+  $('setList').innerHTML = set.items.map((it, i) => `<div class="qi"><div class="tx">${it.img ? `<img src="${it.img}" style="height:40px;vertical-align:middle;border-radius:6px;margin-right:6px">` : ''}${esc(it.q)}<div class="ans">${it.k === 'ox' ? '<span class="k">⭕❌ OX</span>' : ''}정답: ${esc(it.k === 'ox' ? (normOX(it.a) === 'O' ? '⭕' : '❌') : it.a || '(교사 판단)')}${it.e ? ' · ' + esc(it.e) : ''}${it.time ? ` · ⏱ ${it.time}초` : ''}</div></div>
     ${i ? `<button class="sbtn light" data-up="${i}" title="위로">▲</button>` : ''}<button class="sbtn light" data-sdel="${i}">🗑</button></div>`).join('') || '<div style="color:#a39584;padding:14px;text-align:center">아직 문제가 없어요</div>';
 }
 $('setSel').onchange = () => { curSet = +$('setSel').value; renderSets(); };
@@ -2354,16 +2789,16 @@ $('setList').onclick = e => {
 };
 $('mAdd').onclick = () => {
   const q = $('mQ').value.trim(), a = $('mA').value.trim(), e = $('mE').value.trim(); if (!q) return toast('문제를 적어 주세요');
-  const set = S.sets[curSet]; set.items.push({ q, a, e, k: a ? 'short' : 'draw', time: +$('mT').value || undefined, img: mImgData || undefined });
+  const set = S.sets[curSet], oa = normOX(a); set.items.push({ q, a: oa || a, e, k: oa ? 'ox' : a ? 'short' : 'draw', time: +$('mT').value || undefined, img: mImgData || undefined });
   saveLocal(); $('mQ').value = $('mA').value = $('mE').value = ''; $('mImg').value = ''; $('mImgPv').hidden = true; mImgData = null;
   renderSets(); toast(`⭐ 「${set.name}」에 저장했어요 (${set.items.length}문제)`);
 };
 function parseBulk(text) {
-  return text.split(/\r?\n/).map(l => l.trim()).filter(Boolean).map(l => { const [q, a = '', e = ''] = l.split(/\s*[|\t]\s*/); return { q, a, e, k: a ? 'short' : 'draw' }; }).filter(x => x.q);
+  return text.split(/\r?\n/).map(l => l.trim()).filter(Boolean).map(l => { const [q, a = '', e = ''] = l.split(/\s*[|\t]\s*/); const oa = normOX(a); return { q, a: oa || a, e, k: oa ? 'ox' : a ? 'short' : 'draw' }; }).filter(x => x.q);
 }
 $('mBulkAdd').onclick = () => { const items = parseBulk($('mBulk').value); if (!items.length) return toast('붙여넣은 문제가 없어요'); S.sets[curSet].items.push(...items); saveLocal(); $('mBulk').value = ''; renderSets(); toast(`📋 ${items.length}문제를 저장했어요`); };
 $('mExport').onclick = () => { const set = S.sets[curSet]; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify({ name: set.name, items: set.items }, null, 1)], { type: 'application/json' })); a.download = `골든벨_${set.name}.json`; a.click(); };
-const cleanItem = x => ({ q: String(x.q), a: String(x.a || ''), e: String(x.e || ''), k: x.k === 'draw' || !x.a ? 'draw' : 'short', time: +x.time || undefined, img: typeof x.img === 'string' && x.img.startsWith('data:image/') ? x.img : undefined });
+const cleanItem = x => ({ q: String(x.q), a: String(x.a || ''), e: String(x.e || ''), k: x.k === 'ox' || normOX(x.a) ? 'ox' : x.k === 'draw' || !x.a ? 'draw' : 'short', time: +x.time || undefined, img: typeof x.img === 'string' && x.img.startsWith('data:image/') ? x.img : undefined });
 $('mImport').onchange = async e => {
   const f = e.target.files[0]; if (!f) return; const txt = await f.text(); e.target.value = '';
   try {
