@@ -259,6 +259,64 @@ body.phone #edImgBox img{max-height:130px}
 .rkt{margin-top:10px}.rkt div{display:flex;gap:8px;align-items:center;background:#fff;border:2px solid #e5dccb;border-radius:10px;padding:7px 10px;font-weight:800;margin-bottom:5px}
 .rkt div.top{background:#fff6cf;border-color:var(--gold)}
 select.inp{font-size:15px;padding:9px}
+
+/* ===== 화면 정리 (디자인 통일) ===== */
+#join .card{width:min(720px,100%);padding:24px 26px}
+.title h1{font-size:30px}
+.link{background:none;border:none;color:#7a6c5d;font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
+.link.foot{display:block;margin:14px auto 0}
+.roomchip{display:inline-flex;align-items:center;gap:6px;background:#fff6cf;border:2px solid var(--gold);border-radius:999px;padding:6px 12px;font-size:16px;margin:6px 0 4px}
+.roomchip b{font-size:20px;letter-spacing:3px}
+.inp.bigname{font-size:22px;padding:14px;font-weight:800}
+.s2head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.s2head b{font-size:18px}
+.jgrid2{display:grid;grid-template-columns:260px 1fr;gap:16px;align-items:start}
+.jgrid2 #pv{width:100%;height:320px}
+#pvSlotT #pv{width:100%;height:240px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gcards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gcards button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 10px;border-radius:16px;background:#fff;border:3px solid #e5dccb;font-family:inherit}
+.gcards button .gi{font-size:34px}.gcards button b{font-size:18px}.gcards button small{font-size:12px;color:#7a6c5d}
+.gcards button.on{border-color:var(--ink);background:#fff6cf;box-shadow:0 4px 0 var(--ink)}
+body.phone .jgrid2{grid-template-columns:1fr}body.phone .jgrid2 #pv{height:200px}body.phone .row2{grid-template-columns:1fr}
+/* 위쪽 막대 */
+#hud{background:rgba(24,22,20,.84);color:#fff;border-radius:999px;padding:4px 6px 4px 14px;gap:4px;border:none;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+#hud span{font-weight:800;font-size:14px;white-space:nowrap}#hud .hsep{width:1px;height:16px;background:rgba(255,255,255,.3);margin:0 6px}
+#hud .hb{width:36px;height:36px;border-radius:50%;background:transparent;color:#fff;font-size:17px}
+#hud .hb:hover{background:rgba(255,255,255,.14)}
+#btnRoster{display:none}body.phone #btnRoster{display:block}
+/* 팝업 메뉴 */
+#pop{position:fixed;z-index:70;background:#fffdf7;border:3px solid var(--ink);border-radius:16px;padding:6px;min-width:220px;box-shadow:0 12px 34px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:2px}
+#pop button{text-align:left;padding:11px 12px;border-radius:10px;background:none;font-weight:800;font-size:15px;font-family:inherit}
+#pop button:hover:not(:disabled){background:#f4efe4}#pop button:disabled{opacity:.4;cursor:default}#pop button.danger{color:var(--no)}
+#pop .pt{font-size:12px;color:#7a6c5d;font-weight:800;padding:6px 12px 2px}
+/* 게임 화면 패널 : 반투명 어두운 바탕 */
+.rbox{background:rgba(24,22,20,.78);border:none;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.rbox h4{color:var(--gold2)}.rlist .sc{color:#9cc8ff}.rlist .me{color:var(--gold2)}
+#qbar{padding:12px 16px}#qbText{font-size:19px}#qbNum{font-size:16px}#qbTime{font-size:28px}
+#ansCard{background:rgba(24,22,20,.9);color:#fff;border-color:#4ade80}
+#ansCard .ac-a{font-size:20px}#ansCard .ac-a b{color:#7ef0a6;font-size:26px}#ansCard .ac-e{color:#e7e2da;font-size:16px}#acStat{color:#cfc8bd}
+/* 진행 바 */
+#tbar{width:max-content;max-width:calc(100% - 16px);gap:8px;padding:8px 10px;border-radius:20px;border:none;background:rgba(24,22,20,.9);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#tbar .st{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tbar button{padding:11px 15px;font-size:15px}
+#tbar button.pri{background:var(--gold);font-size:17px;padding:12px 20px;box-shadow:0 4px 0 #a37a00}
+#tbar button.ico{width:46px;padding:11px 0;font-size:18px}
+#tbar button.skip{background:#fca5a5}
+/* 교사 메뉴 */
+.tbody h2{font-size:22px}.probtabs{margin-bottom:12px;border-bottom:2px solid #efe8da;padding-bottom:10px}
+details.grp{background:#fff;border:2px solid #e5dccb;border-radius:14px;margin-bottom:10px;overflow:hidden}
+details.grp>summary{padding:13px 16px;font-weight:900;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+details.grp>summary::after{content:'▾';color:#a39584}details.grp[open]>summary::after{content:'▴'}
+details.grp>summary::-webkit-details-marker{display:none}
+details.grp .grp-b{padding:0 12px 6px}details.grp .setItem{border:none;border-top:1px solid #f0e9dc;border-radius:0;margin:0;padding:11px 4px}
+body.bell .only-ox{display:none}
+/* 📽 발표 모드 : 칠판 화면에는 3D · 문제 · 정답만 */
+body.proj #roster,body.proj #tools,body.proj #hud,body.proj #hint{display:none!important}
+body.proj #tbar{transform:translate(-50%,calc(100% - 14px));opacity:.35;transition:.25s}
+body.proj #tbar:hover{transform:translateX(-50%);opacity:1}
+body.proj #qbText{font-size:24px}body.proj #qbTime{font-size:34px}
+#projTip{position:fixed;right:12px;bottom:12px;z-index:9;font-size:12px;color:#fff;background:rgba(0,0,0,.4);padding:4px 10px;border-radius:999px;display:none}
+body.proj #projTip{display:block}
 </style>
 </head>
 <body>
@@ -268,32 +326,35 @@ select.inp{font-size:15px;padding:9px}
 <div id="join">
   <div class="card">
     <div class="title"><span class="bell">🔔</span><h1 id="appTitle">골든벨 3D</h1></div>
-    <div class="sub">강당 번호 방석(최대 60명)에 앉아 화이트보드에 답을 쓰고, 시간이 끝나면 번쩍! 마지막까지 살아남아 골든벨을 울려요.</div>
-    <div class="tabs"><button id="tabS" class="on">🙋 학생</button><button id="tabT">👩‍🏫 교사</button></div>
     <div id="formS">
-      <div class="jgrid">
-        <div>
-          <label class="f">방 코드</label><input id="inRoom" class="inp code" inputmode="numeric" maxlength="4" placeholder="0000">
-          <label class="f">이름</label><input id="inName" class="inp" maxlength="10" placeholder="이름 (10자 이내)">
-          <div id="lookSlotS"><div id="lookBox">
+      <div id="stepS1">
+        <div class="sub">이름을 쓰고 들어가요. 캐릭터는 다음 화면에서 꾸며요.</div>
+        <div id="roomChip" class="roomchip" hidden>🚪 방 <b id="roomChipN"></b> <button class="link" id="roomChange" type="button">바꾸기</button></div>
+        <div id="roomBox"><label class="f">방 코드</label><input id="inRoom" class="inp code" inputmode="numeric" maxlength="4" placeholder="0000"></div>
+        <label class="f">이름</label><input id="inName" class="inp bigname" maxlength="10" placeholder="이름 (10자 이내)" autocomplete="off">
+        <button class="big" id="btnNextS">다음 ▶</button>
+      </div>
+      <div id="stepS2" hidden>
+        <div class="s2head"><button class="link" id="btnBackS" type="button">◀ 이전</button><b>내 캐릭터 꾸미기</b><span></span></div>
+        <div class="jgrid2"><div id="pvSlotS"><canvas id="pv"></canvas></div><div id="lookSlotS"><div id="lookBox">
           <label class="f" style="display:flex;align-items:center;gap:8px"><span id="lookLabel">캐릭터 꾸미기</span> <button class="sbtn gold" id="lookRand" type="button">🎲 랜덤</button></label>
           <div class="subtabs" id="lookTabs" style="margin-bottom:4px"><button data-lt="face" class="on">😊 얼굴</button><button data-lt="hair">💇 머리</button><button data-lt="wear">👕 옷</button><button data-lt="acc">🎒 소품</button></div>
           <div id="lookBody"></div>
-          </div></div>
-        </div>
-        <div id="pvSlotS"><canvas id="pv"></canvas></div>
+          </div></div></div>
+        <button class="big" id="btnJoinS">입장하기 🔔</button>
       </div>
-      <button class="big" id="btnJoinS">강당으로 입장! 🔔</button>
+      <button class="link foot" id="tabT" type="button">👩‍🏫 선생님 입장</button>
     </div>
     <div id="formT" hidden>
-      <label class="f">방 코드 (학생들에게 알려 줄 숫자 4자리)</label><input id="inRoomT" class="inp code" inputmode="numeric" maxlength="4">
-      <label class="f">교사 비밀번호</label><input id="inPw" class="inp" type="password" placeholder="비밀번호">
+      <div class="sub">수업을 열어요. 학생들은 QR이나 방 코드로 들어와요.</div>
+      <div class="row2"><div><label class="f">방 코드</label><input id="inRoomT" class="inp code" inputmode="numeric" maxlength="4"></div><div><label class="f">교사 비밀번호</label><input id="inPw" class="inp" type="password" placeholder="비밀번호"></div></div>
       <label class="f">게임 종류</label>
-      <div class="seg" id="gameSegJ"><button data-g="bell" class="on">🔔 골든벨<small>강당 · 손글씨 답판 · 교사 채점</small></button><button data-g="ox">⭕❌ OX 퀴즈<small>농구장 · O/X로 이동 · 자동 채점</small></button></div>
-      <label class="f">게임 방식 (나중에 바꿀 수 있어요)</label>
+      <div class="gcards" id="gameSegJ"><button data-g="bell" class="on" type="button"><span class="gi">🔔</span><b>골든벨</b><small>강당 · 손글씨 답판 · 선생님 채점</small></button><button data-g="ox" type="button"><span class="gi">⭕❌</span><b>OX 퀴즈</b><small>농구장 · O/X로 이동 · 자동 채점</small></button></div>
+      <label class="f">게임 방식 <small style="font-weight:500;color:#7a6c5d">(나중에 바꿀 수 있어요)</small></label>
       <div class="seg" id="modeSegJ"><button data-m="elim">🔔 탈락형<small>틀리면 응원단으로!</small></button><button data-m="score" class="on">💯 점수형<small>모두 끝까지, 점수·시간으로 순위</small></button></div>
-      <div class="jgrid" style="margin-top:6px"><div id="lookSlotT"></div><div id="pvSlotT"></div></div>
-      <details class="fb" id="fbBox">
+      <details class="fb" id="advT"><summary>⚙️ 고급 설정 — 무대 위 내 캐릭터 · 서버 연결</summary>
+        <div class="jgrid2" style="margin:10px 0"><div id="pvSlotT"></div><div id="lookSlotT"></div></div>
+        <details class="fb" id="fbBox">
         <summary>🔧 온라인 서버(Firebase) 연결 — <span id="fbState"></span></summary>
         <ol>
           <li><a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase 콘솔</a>에서 새 프로젝트를 만들어요 (애널리틱스는 꺼도 돼요).</li>
@@ -305,7 +366,9 @@ select.inp{font-size:15px;padding:9px}
         <div class="row" style="margin-top:6px"><button class="sbtn" id="fbSave">저장</button><button class="sbtn light" id="fbClear">지우기 (데모 모드로)</button></div>
         <div style="font-size:12px;color:#6b5d4f">저장하면 학생 QR·링크에 서버 정보가 함께 담겨서, 학생은 따로 설정할 필요가 없어요.</div>
       </details>
-      <button class="big" id="btnJoinT">교사로 입장 👩‍🏫</button>
+      </details>
+      <button class="big" id="btnJoinT">수업 열기 👩‍🏫</button>
+      <button class="link foot" id="tabS" type="button">🙋 학생으로 입장</button>
     </div>
     <div class="err" id="err"></div>
     <div class="mode" id="modeInfo"></div>
@@ -313,7 +376,9 @@ select.inp{font-size:15px;padding:9px}
 </div>
 
 <div id="tools" hidden><button class="iconbtn" id="btnView" title="시점 바꾸기">🎥</button><button class="iconbtn" id="btnLite" title="가벼운 화면">⚡</button><button class="iconbtn" id="btnChat" title="채팅" hidden>💬<span id="chatBadge" hidden></span></button></div>
-<div id="hud" hidden><span class="chip" id="hudRoom"></span><span class="chip" id="hudMe"></span><button class="iconbtn" id="btnRoster" title="명단">👥</button><button class="iconbtn" id="btnSnd" title="소리">🔊</button><button class="iconbtn" id="btnLeave" title="나가기">🚪</button></div>
+<div id="hud" hidden><span id="hudRoom"></span><span class="hsep"></span><span id="hudMe"></span><button class="hb" id="btnRoster" title="명단">👥</button><button class="hb" id="btnSnd" title="소리">🔊</button><button class="hb" id="btnMore" title="더보기">⋯</button><button id="btnLeave" hidden></button></div>
+<div id="pop" hidden></div>
+<div id="projTip">📽 발표 모드 · 화면 아래에 마우스를 올리면 진행 바가 나와요</div>
 <div id="roster" hidden>
   <div class="rbox" id="rTeamBox" hidden><h4>👥 모둠 순위</h4><div class="rlist" id="rTeam"></div></div>
   <div class="rbox"><h4 id="rAliveH">🙋 도전 중 <b id="rAliveN">0</b></h4><div class="rlist" id="rAlive"></div></div>
@@ -389,15 +454,14 @@ select.inp{font-size:15px;padding:9px}
       <h3>👩‍🏫 교사 메뉴</h3>
       <div class="stat" id="tStat"></div>
       <button class="tab on" data-t="qr">📱 학생 입장<small>QR · 방 코드</small></button>
-      <button class="tab" data-t="write">✍️ 문제 내기<small>직접 써서 바로 출제</small></button>
-      <button class="tab" data-t="bank">📚 문제 은행<small>골라서 바로 출제</small></button>
-      <button class="tab" data-t="mine">➕ 문제 세트<small>단원별로 만들어 저장</small></button>
-      <button class="tab" data-t="play">🎮 진행 · 공지<small>방식 · 패자부활 · 종료</small></button>
-      <button class="tab" data-t="stu">🙋 학생 관리<small>이름 · 모둠 · 내보내기</small></button>
-      <button class="tab" data-t="set">⚙️ 설정<small>시간 · 규칙 · 테스트</small></button>
+      <button class="tab" data-t="bank">📚 문제<small>은행 · 직접 쓰기 · 세트</small></button>
+      <button class="tab" data-t="play">🎮 진행<small>방식 · 공지 · 결과</small></button>
+      <button class="tab" data-t="stu">🙋 학생<small>관리 · 자리 · 모둠</small></button>
+      <button class="tab" data-t="set">⚙️ 설정<small>시간 · 규칙 · 재미 · 채팅</small></button>
       <button class="close" id="tClose">✕ 닫고 강당 보기</button>
     </div>
     <div class="tbody">
+      <div class="subtabs probtabs" id="probTabs" hidden><button data-t="bank">📚 문제 은행</button><button data-t="write">✍️ 직접 쓰기</button><button data-t="mine">🗂 세트 관리</button></div>
       <section data-p="qr">
         <h2>📱 학생 입장</h2><div class="desc">학생들이 QR을 찍거나 링크로 들어와서 이름을 적고 입장해요. 방 코드는 자동으로 들어가요.</div>
         <div class="qrwrap"><img id="qrImg" alt="QR"><div><div style="font-weight:800;color:#6b5d4f">방 코드</div><div class="roomCode" id="tRoom">0000</div><div class="linkbox" id="tLink"></div><button class="sbtn" id="copyLink">🔗 링크 복사</button><div style="margin-top:10px;font-weight:800"><span id="tOnline">0</span>명 접속 중</div></div></div>
@@ -437,14 +501,12 @@ select.inp{font-size:15px;padding:9px}
         <h4 class="sec">이 세트의 문제</h4><div class="qlist" id="setList"></div>
       </section>
       <section data-p="play" hidden>
-        <h2>🎮 진행 · 공지</h2><div class="desc">문제마다 공개·채점은 화면 아래 진행 바에서 해요.</div>
+        <h2>🎮 진행</h2><div class="desc">문제 내기·마감·채점은 화면 아래 진행 바에서 해요.</div>
         <h4 class="sec">게임 종류</h4>
         <div class="seg" id="gameSeg"><button data-g="bell">🔔 골든벨<small>강당 · 손글씨 답판</small></button><button data-g="ox">⭕❌ OX 퀴즈<small>농구장 · 자동 채점</small></button></div>
         <h4 class="sec">게임 방식</h4>
         <div class="seg" id="modeSeg"><button data-m="elim">🔔 탈락형<small>틀리면 응원단으로</small></button><button data-m="score">💯 점수형<small>맞히면 +1점</small></button></div>
         <div class="stats4"><div><b id="sOn">0</b>접속</div><div><b id="sAlive">0</b>도전 중</div><div><b id="sQn">0</b>문제 번호</div><div><b id="sPh">대기</b>지금 단계</div></div>
-        <h4 class="sec">🪑 자리</h4>
-        <div class="row"><button class="sbtn light" id="seatShuffle">🔀 자리 섞기</button><button class="sbtn light" id="seatName">🔤 이름순으로 앉기</button></div>
         <h4 class="sec">진행</h4>
         <div class="actgrid">
           <button id="aNew">🔄 새 게임<small>모두 도전 · 점수 0점 · 1번부터</small></button>
@@ -460,34 +522,52 @@ select.inp{font-size:15px;padding:9px}
         <div class="log" id="log"><div style="color:#a39584">아직 기록이 없어요</div></div>
       </section>
       <section data-p="stu" hidden>
-        <h2>🙋 학생 관리</h2><div class="desc">이름을 고치거나, 모둠을 바꾸거나, 응원 팻말을 내리거나, 학생을 방에서 내보낼 수 있어요. 접속이 끊긴 학생도 보여요. 같은 이름으로 다시 들어오면 자리·점수를 이어받아요.</div>
+        <h2>🙋 학생</h2>
+        <h4 class="sec">🪑 자리</h4>
+        <div class="row"><button class="sbtn light" id="seatShuffle">🔀 자리 섞기</button><button class="sbtn light" id="seatName">🔤 이름순으로 앉기</button></div>
+        <h4 class="sec">👥 모둠</h4>
+        <div class="setItem"><div><b>👥 모둠 대항전</b><small>학생이 모둠을 골라 들어오고, 모둠 평균 점수(같으면 평균 시간)로 순위를 매겨요</small></div><div class="subtabs" id="teamSeg" style="margin:0"></div></div>
+        <h4 class="sec">🙋 학생 관리</h4><div class="desc">이름을 고치거나, 모둠을 바꾸거나, 응원 팻말을 내리거나, 학생을 방에서 내보낼 수 있어요. 접속이 끊긴 학생도 보여요. 같은 이름으로 다시 들어오면 자리·점수를 이어받아요.</div>
         <div class="qlist" id="stuList"></div>
       </section>
       <section data-p="set" hidden>
-        <h2>⚙️ 설정</h2><div class="desc">게임 규칙과 테스트 도구예요.</div>
+        <h2>⚙️ 설정</h2><div class="desc">묶음 제목을 누르면 펼쳐져요. 지금 게임에 맞는 설정만 보여요.</div>
+        <details class="grp" open><summary>⏱ 기본</summary><div class="grp-b">
         <div class="setItem"><div><b>⏱ 제한시간 <span id="defTimeFor"></span></b><small>문제 내기 · 문제 은행 · 다음 문제 모두 이 시간으로 시작해요 (게임 종류마다 따로 기억해요)</small></div><div class="subtabs" id="defTime" style="margin:0"></div></div>
+        <div class="setItem"><div><b>🏫 현수막 문구</b><small>무대 앞 현수막과 전광판 제목에 나와요 (24자 이내)</small></div><div class="row" style="margin:0"><input id="titleIn" class="inp" maxlength="24" placeholder="예) ○○고 열역학 골든벨" style="width:220px"><button class="sbtn" id="titleGo">적용</button></div></div>
+        <div class="setItem"><div><b>🎨 강당 분위기</b><small>낮에는 밝은 하늘, 저녁에는 노을과 따뜻한 조명</small></div><div class="subtabs" id="themeSeg" style="margin:0"><button data-th="day">☀️ 낮</button><button data-th="evening">🌇 저녁</button></div></div>
+        <div class="setItem"><div><b>👩‍🏫 무대 위 내 캐릭터</b><small>무대에 서 있는 선생님 캐릭터의 옷차림·머리·소품을 바꿔요</small></div><button class="sbtn gold" id="tLookOpen">꾸미기</button></div>
+        </div></details>
+        <details class="grp" ><summary>📏 규칙</summary><div class="grp-b">
         <div class="setItem"><div><b>😅 모두 틀리면 전원 생존</b><small>탈락형에서 남은 학생이 전부 틀리면 아무도 탈락하지 않아요</small></div><button class="tg on" id="tgSafe"></button></div>
+        <div class="setItem"><div><b>🔮 응원석 예측전</b><small>탈락형에서 탈락한 학생도 계속 답을 내고, 2번 맞히면 부활해요 (골든벨·OX 모두)</small></div><button class="tg" id="tgPredict"></button></div>
+        </div></details>
+        <details class="grp" ><summary>🎉 재미 요소</summary><div class="grp-b">
+        <div class="setItem"><div><b>🃏 찬스 카드</b><small>게임마다 한 장씩: ✌️ 2배(맞히면 2점) · 🛡 방패(틀려도 탈락 안 함, 탈락형만) · 💡 보기 지우기(보기 문제만). 한 문제에 한 장만 써요</small></div><button class="tg" id="tgCards"></button></div>
+        <div class="setItem" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div><b>🏀 보너스 슛 · 🔔 타종 찬스</b><small>채점 뒤 맞힌 학생 중에서 뽑아요. OX는 농구공 슛, 골든벨은 종 치기 · 성공하면 +1점</small></div><button class="tg" id="tgShots"></button></div>
+          <div class="row" style="margin-top:8px"><b style="width:66px">진행</b><div class="subtabs" id="shotModeSeg" style="margin:0"><button data-v="draw">🎲 추첨 버튼</button><button data-v="auto">⚡ 자동</button></div></div>
+          <div class="row"><b style="width:66px">한 문제에</b><div class="subtabs" id="shotNSeg" style="margin:0"><button data-v="1">1명</button><button data-v="2">2명</button><button data-v="3">3명</button></div></div>
+          <div class="row"><b style="width:66px">슛 방식</b><div class="subtabs" id="shotHowSeg" style="margin:0"><button data-v="player">🎯 학생이 직접 (게이지)</button><button data-v="auto">🎲 자동 (확률)</button></div></div></div>
+        </div></details>
+        <details class="grp only-ox" ><summary>⭕❌ OX 퀴즈 전용</summary><div class="grp-b">
+        <div class="setItem"><div><b>🔀 문제마다 ⭕/❌ 자리 바꾸기</b><small>코트의 ⭕ 쪽과 ❌ 쪽이 무작위로 바뀌어서 문제를 끝까지 읽어야 해요</small></div><button class="tg" id="tgFlip"></button></div>
+        <div class="setItem"><div><b>👀 ⭕/❌ 인원 보여 주기</b><small>문제 시간에 전광판에 양쪽 인원이 실시간으로 나와요 (눈치 싸움)</small></div><button class="tg" id="tgOxCount"></button></div>
+        </div></details>
+        <details class="grp" ><summary>💬 채팅</summary><div class="grp-b">
         <div class="setItem"><div><b>💬 채팅 방식</b><small>자유 채팅은 문제를 푸는 동안 자동으로 잠겨요 · 5초에 한 번 · 30자 이내 · 욕설은 *** 로 가려요</small></div></div>
         <div class="subtabs" id="chatSeg" style="margin:-4px 0 8px"></div>
         <div class="setItem"><div><b>🙋 선생님께 질문 받기</b><small>학생이 선생님에게만 보내는 1:1 질문 (💬 › 🙋 선생님께 탭에서 답장)</small></div><button class="tg" id="tgAsk"></button></div>
         <div class="setItem" style="display:block"><b>💬 빠른 말 문장</b><small>한 줄에 하나씩, 최대 12개 · 20자 이내</small><textarea id="phrIn" class="inp" rows="4" style="margin-top:6px;font-size:13px"></textarea><button class="sbtn" id="phrGo" style="margin-top:4px">저장</button></div>
         <div class="setItem" style="display:block"><b>🚫 금칙어 추가</b><small>기본 욕설 목록 말고 더 막을 말을 쉼표로 적어요 (별명·놀림말 등)</small><input id="banIn" class="inp" style="margin-top:6px;font-size:13px"><button class="sbtn" id="banGo" style="margin-top:4px">저장</button></div>
-        <div class="setItem"><div><b>👩‍🏫 무대 위 내 캐릭터</b><small>무대에 서 있는 선생님 캐릭터의 옷차림·머리·소품을 바꿔요</small></div><button class="sbtn gold" id="tLookOpen">꾸미기</button></div>
-        <div class="setItem"><div><b>🏫 현수막 문구</b><small>무대 앞 현수막과 전광판 제목에 나와요 (24자 이내)</small></div><div class="row" style="margin:0"><input id="titleIn" class="inp" maxlength="24" placeholder="예) ○○고 열역학 골든벨" style="width:220px"><button class="sbtn" id="titleGo">적용</button></div></div>
-        <div class="setItem"><div><b>🎨 강당 분위기</b><small>낮에는 밝은 하늘, 저녁에는 노을과 따뜻한 조명</small></div><div class="subtabs" id="themeSeg" style="margin:0"><button data-th="day">☀️ 낮</button><button data-th="evening">🌇 저녁</button></div></div>
-        <div class="setItem"><div><b>👥 모둠 대항전</b><small>학생이 모둠을 골라 들어오고, 모둠 평균 점수(같으면 평균 시간)로 순위를 매겨요</small></div><div class="subtabs" id="teamSeg" style="margin:0"></div></div>
-        <div class="setItem"><div><b>🃏 찬스 카드</b><small>게임마다 한 장씩: ✌️ 2배(맞히면 2점) · 🛡 방패(틀려도 탈락 안 함, 탈락형만) · 💡 보기 지우기(보기 문제만). 한 문제에 한 장만 써요</small></div><button class="tg" id="tgCards"></button></div>
-        <div class="setItem"><div><b>🔮 응원석 예측전</b><small>탈락형에서 탈락한 학생도 계속 답을 내고, 2번 맞히면 부활해요 (골든벨·OX 모두)</small></div><button class="tg" id="tgPredict"></button></div>
-        <h4 class="sec">⭕❌ OX 퀴즈 설정</h4>
-        <div class="setItem"><div><b>🔀 문제마다 ⭕/❌ 자리 바꾸기</b><small>코트의 ⭕ 쪽과 ❌ 쪽이 무작위로 바뀌어서 문제를 끝까지 읽어야 해요</small></div><button class="tg" id="tgFlip"></button></div>
-        <div class="setItem"><div><b>👀 ⭕/❌ 인원 보여 주기</b><small>문제 시간에 전광판에 양쪽 인원이 실시간으로 나와요 (눈치 싸움)</small></div><button class="tg" id="tgOxCount"></button></div>
-        <div class="setItem" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div><b>🏀 보너스 슛 · 🔔 타종 찬스</b><small>채점 뒤 맞힌 학생 중에서 뽑아요. OX는 농구공 슛, 골든벨은 종 치기 · 성공하면 +1점</small></div><button class="tg" id="tgShots"></button></div>
-          <div class="row" style="margin-top:8px"><b style="width:66px">진행</b><div class="subtabs" id="shotModeSeg" style="margin:0"><button data-v="draw">🎲 추첨 버튼</button><button data-v="auto">⚡ 자동</button></div></div>
-          <div class="row"><b style="width:66px">한 문제에</b><div class="subtabs" id="shotNSeg" style="margin:0"><button data-v="1">1명</button><button data-v="2">2명</button><button data-v="3">3명</button></div></div>
-          <div class="row"><b style="width:66px">슛 방식</b><div class="subtabs" id="shotHowSeg" style="margin:0"><button data-v="player">🎯 학생이 직접 (게이지)</button><button data-v="auto">🎲 자동 (확률)</button></div></div></div>
+        </div></details>
+        <details class="grp" ><summary>🎵 소리</summary><div class="grp-b">
         <div class="setItem"><div><b>🎵 배경음악</b><small>문제 시간엔 긴박한 음악, 쉬는 시간엔 잔잔한 음악</small></div><button class="tg on" id="tgBgm"></button></div>
+        </div></details>
+        <details class="grp" ><summary>🤖 테스트 · 연결</summary><div class="grp-b">
         <div class="setItem"><div><b>🤖 테스트 봇</b><small>가짜 학생을 넣어 미리 연습해요. 새 탭에서 학생으로 들어가 봐도 돼요.</small></div><div class="row"><button class="sbtn" id="botAdd">봇 +10</button><button class="sbtn light" id="botDel">봇 제거</button></div></div>
         <div class="setItem"><div><b>🖥 연결 상태</b><small id="netInfo"></small></div></div>
+      
+        </div></details>
       </section>
     </div>
   </div>
@@ -793,7 +873,7 @@ const T = {
     const qn = (S.state.qn || 0) + 1, time = item.time || curDef();
     await S.net.update('', { ['hype/' + qn]: null, ['ox/' + qn]: null, ['ans/' + qn]: null, ['sub/' + qn]: null, ['grade/' + qn]: null, ['chance/' + qn]: null, ['hint/' + qn]: null, ['time/' + qn]: null });
     S.curQ = { qn, ans: item.a || '', expl: item.e || '' }; try { localStorage.setItem('gb_curq:' + S.room, JSON.stringify(S.curQ)); } catch (e) {}
-    await S.net.update('state', { phase: 'q', qn, q: { text: item.q, kind: item.k || 'short', img: item.img || null, hasOpts: parseOpts(item.q).length > 1 }, time, startAt: now() + 2500, endsAt: now() + time * 1000 + 2500, result: null, revealAt: null, present: null, gold: !!item.gold, flip: ox && !!S.state.flipOn && Math.random() < .5, shots: null });
+    await S.net.update('state', { phase: 'q', qn, q: { text: item.q, kind: item.k || 'short', img: item.img || null, hasOpts: parseOpts(item.q).length > 1 }, time, startAt: now() + 2500, endsAt: now() + time * 1000 + 2500, result: null, revealAt: null, present: null, shot: null, gold: !!item.gold, flip: ox && !!S.state.flipOn && Math.random() < .5, shots: null });
     S.used.add(item.q); saveLocal();
     addLog(`Q${qn} 출제${item.gold ? ' ⭐황금' : ''}: ${item.q.slice(0, 30)}`);
     $('tpanel').hidden = true;
@@ -894,7 +974,7 @@ const T = {
     await S.net.update('', up);
     addLog(`${s.kind === 'bell' ? '🔔 타종 찬스' : '🏀 보너스 슛'}: ${S.players[s.id]?.name || ''} ${made ? '성공 +1' : '실패'}`);
     // 자동 추첨이면 남은 인원만큼 이어서
-    if (S.state.shotMode === 'auto') setTimeout(() => T.drawShot(), 3500);
+    if (S.state.shotMode === 'auto' && S.noAutoShot !== S.state.qn) setTimeout(() => { if (S.noAutoShot !== S.state.qn) T.drawShot(); }, 3500);
   },
   /* 🎤 정답 발표 찬스 (골든벨) : 맞힌 학생 한 명의 답판을 모두에게 크게 보여 줘요 */
   async drawPresent() {
@@ -911,6 +991,12 @@ const T = {
     const up = { 'state/present/praised': now() };
     if (S.players[pr.id]) { up[`players/${pr.id}/score`] = (S.players[pr.id].score || 0) + 1; if (S.lastGrade && S.lastGrade.qn === pr.qn) S.lastGrade.bonus[pr.id] = (S.lastGrade.bonus[pr.id] || 0) + 1; }
     await S.net.update('', up); addLog(`🎤 정답 발표: ${S.players[pr.id]?.name || ''} 👍 +1점`);
+  },
+  /* ⏭ 건너뛰기 : 진행 중인 슛·종치기를 점수 없이 끝내요 */
+  async skipShot() {
+    const s = S.state.shot; if (!s || s.res || s.qn !== S.state.qn) return;
+    S.noAutoShot = S.state.qn;
+    await S.net.update('state/shot', { res: now(), made: false, skipped: true }); addLog('⏭ 보너스 찬스 건너뜀');
   },
   closePresent() { if (S.state.present) S.net.update('state/present', { closed: now() }); },
   shotTick() {
@@ -945,7 +1031,7 @@ const T = {
     up['state/revive'] = now();
     await S.net.update('', up); addLog(`✨ 패자부활 ${n}명`); toast(`✨ ${n}명 부활!`);
   },
-  endGame() { S.net.update('state', { phase: 'end', endAt: now() }); addLog('🏆 게임 종료 · 순위 발표'); },
+  endGame() { S.net.update('state', { phase: 'end', endAt: now(), shot: null, present: null }); addLog('🏆 게임 종료 · 순위 발표'); },
   async closeRoom() {
     const go = await confirmBox('🔒', '방을 닫을까요?', '모든 학생이 첫 화면으로 돌아가고, 이 방의 기록이 지워져요.', [['취소', 'light', false], ['방 닫기', 'red', true]]);
     if (!go) return;
@@ -2118,7 +2204,7 @@ function updateRoulette() {
   shotBeam.visible = true; shotBeam.position.set(a.root.position.x, a.root.position.y + 4.5, a.root.position.z);
   shotBeam.material.opacity = .22 + .12 * Math.sin(el / 80);
   const s = S.state[roul.src];
-  if (!s || s.ts !== roul.s.ts || (s.res && now() - s.res > 3500) || s.closed) roul = null;
+  if (!s || s.ts !== roul.s.ts || (s.res && (s.skipped || now() - s.res > 3500)) || s.closed || s.qn !== S.state.qn || S.state.phase !== 'graded') roul = null;   // 건너뛰기·다음 문제·종료면 조명 끄기
 }
 /* =========================================================
    OX 정답 공개 연출 : 서치라이트 → 꽃가루 대포 → 대형 물폭탄
@@ -2300,8 +2386,18 @@ function buildLook() {
 $('lookTabs').onclick = e => { const b = e.target.closest('[data-lt]'); if (b) { lookTab = b.dataset.lt; buildLook(); } };
 $('lookBody').onclick = e => { const b = e.target.closest('[data-k]'); if (!b) return; curLook()[b.dataset.k] = b.dataset.v ?? +b.dataset.i; buildLook(); SND.init(); SND.click(); };
 $('lookRand').onclick = () => { Object.assign(curLook(), randomLook()); buildLook(); SND.init(); SND.pop(); };
-$('tabS').onclick = () => { moveLook('S'); $('tabS').classList.add('on'); $('tabT').classList.remove('on'); $('formS').hidden = false; $('formT').hidden = true; $('err').textContent = ''; };
-$('tabT').onclick = () => { moveLook('T'); $('tabT').classList.add('on'); $('tabS').classList.remove('on'); $('formS').hidden = true; $('formT').hidden = false; $('err').textContent = ''; };
+$('tabS').onclick = () => { moveLook('S'); $('formS').hidden = false; $('formT').hidden = true; showStep(1); $('err').textContent = ''; };
+$('tabT').onclick = () => { moveLook('T'); $('formS').hidden = true; $('formT').hidden = false; $('err').textContent = ''; };
+/* 학생 입장 2단계 : ① 이름 → ② 캐릭터 꾸미기 */
+function showStep(n) { $('stepS1').hidden = n !== 1; $('stepS2').hidden = n !== 2; if (n === 2) { moveLook('S'); dispatchEvent(new Event('resize')); } $('err').textContent = ''; }
+function syncRoomChip() { const r = $('inRoom').value.trim(), fixed = /^\d{4}$/.test(r) && QS.get('room') === r; $('roomChip').hidden = !fixed; $('roomBox').hidden = fixed; $('roomChipN').textContent = r; }
+$('roomChange').onclick = () => { $('roomChip').hidden = true; $('roomBox').hidden = false; $('inRoom').focus(); };
+$('btnNextS').onclick = () => {
+  if (!/^\d{4}$/.test($('inRoom').value.trim())) { $('err').textContent = '방 코드는 숫자 4자리예요'; return; }
+  if (!$('inName').value.trim()) { $('err').textContent = '이름을 적어 주세요'; $('inName').focus(); return; }
+  SND.init(); showStep(2);
+};
+$('btnBackS').onclick = () => showStep(1);
 let joinMode = 'score', joinGame = localStorage.getItem('gb_game') || 'bell';
 [...$('gameSegJ').children].forEach(x => x.classList.toggle('on', x.dataset.g === joinGame));
 $('gameSegJ').onclick = e => { const b = e.target.closest('button'); if (!b) return; joinGame = b.dataset.g; localStorage.setItem('gb_game', joinGame); [...$('gameSegJ').children].forEach(x => x.classList.toggle('on', x === b)); };
@@ -2309,6 +2405,7 @@ $('modeSegJ').onclick = e => { const b = e.target.closest('button'); if (!b) ret
 $('inRoom').value = QS.get('room') || localStorage.getItem('gb_room') || '';
 $('inName').value = localStorage.getItem('gb_name') || '';
 $('inRoomT').value = localStorage.getItem('gb_troom') || String(1000 + Math.floor(Math.random() * 9000));
+syncRoomChip();
 if (QS.get('room')) setTimeout(() => $('inName').focus(), 300);
 /* 휴대폰이 페이지를 새로 불러왔으면(화면 꺼짐 등) 3시간 안에는 자동으로 다시 들어가요 */
 (() => {
@@ -2338,7 +2435,7 @@ modeText(); initPreview(); buildLook();
 $('inRoom').oninput = $('inRoomT').oninput = e => e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
 $('btnJoinS').onclick = () => join(false);
 $('btnJoinT').onclick = () => join(true);
-$('inName').onkeydown = e => { if (e.key === 'Enter') join(false); };
+$('inName').onkeydown = e => { if (e.key === 'Enter') $('btnNextS').click(); };
 $('inPw').onkeydown = e => { if (e.key === 'Enter') join(true); };
 
 async function join(teacher, auto) {
@@ -2489,6 +2586,8 @@ function onState(prev, v) {
   if (S.isTeacher && newQ && VIEW === 'students') setView('stage');   // 새 문제가 나오면 다시 무대·전광판 쪽으로
   if (p1 === 'graded' && p0 !== 'graded') { SND.setBgm('calm'); if (S.isTeacher) { $('gal').hidden = true; const r = v.result || {}; if (r.ok) ringBell(.5); } checkMyResult(); }
   if (p1 === 'wait' && p0 && p0 !== 'wait') { SND.setBgm('calm'); $('gal').hidden = true; }
+  if (p1 !== 'graded' || !v.shot || v.shot.res) $('shotUI').hidden = true;
+  if (p1 !== 'graded') $('presentUI').hidden = true;
   if (p1 === 'end' && p0 !== 'end') { SND.setBgm(''); SND.fanfare(); ringBell(1); confetti(); setTimeout(() => showRanking(false), 900); }
   if (!S.isTeacher && v.showRank && v.showRank !== prev.showRank && v.showRank > S.joinAt - 2000 && p1 !== 'end') { SND.pop(); showRanking(true); }
   if (p1 !== 'end' && p0 === 'end') $('rank').hidden = true;   // 게임이 다시 시작될 때만 닫아요 (지금 순위 창은 그대로)
@@ -2502,7 +2601,8 @@ function onState(prev, v) {
   if (v.present?.closed && v.present.closed !== prev.present?.closed) $('presentUI').hidden = true;
   if (v.shot && v.shot.res && v.shot.res !== prev.shot?.res) {   // 슛 결과
     $('shotUI').hidden = true; const a = AV[v.shot.id], nm = S.players[v.shot.id]?.name || '친구';
-    if (v.shot.kind === 'bell') {   // 🔔 타종 찬스 결과
+    if (v.shot.skipped) { toast('⏭ 이번 찬스는 건너뛰었어요'); }
+    else if (v.shot.kind === 'bell') {   // 🔔 타종 찬스 결과
       if (a) { a.emote = v.shot.made ? 2 : 8; a.emoteT = 2.2; showBubble(a, v.shot.made ? '🔔' : '😵'); }
       if (v.shot.made) { ringBell(1); confetti(50); } else { bellSwing = Math.max(bellSwing, .12); SND.tone(420, .5, 'triangle', .1, 0, 300); }
       toast(`🔔 ${nm} ${v.shot.made ? '땡~! 타종 성공 +1점' : '앗, 빗나갔어요!'}`, 2400);
@@ -2627,6 +2727,8 @@ function tickUI() {
   else if (meP() && !meP().alive && st.mode === 'elim') { fb.hidden = false; fb.textContent = '📣 응원 팻말 만들기'; fb.dataset.m = 'cheer'; }
   else fb.hidden = true;
   renderOXBar();
+  document.body.classList.toggle('bell', !isOX());
+  if (!S.isTeacher && meP()) $('seatBtn').hidden = !['wait', 'graded'].includes(phs) || (!meP().alive && st.mode === 'elim');   // 내 자리로는 기다리는 시간에만
   $('hypeBtn').hidden = !hypeVisible(); if (hypeVisible()) $('hypeN').textContent = `우리 함성 ${Object.values(S.hype || {}).reduce((s, v) => s + (+v || 0), 0)}`;
   if (S.isTeacher) { renderTbar(); if ((botT += 1) % 10 === 0) Bots.emote(); }
 }
@@ -2855,25 +2957,57 @@ function renderTbar(force) {
   const list = onlineList(), cand = list.filter(p => st.mode === 'score' || p.alive);
   const sub = Object.keys(isOX() ? (S.ox || {}) : (S.ans || {})).filter(id => cand.some(p => p.id === id)).length;
   const left = phs === 'q' ? Math.max(0, Math.ceil((st.endsAt - now()) / 1000)) : 0;
-  const status = (isOX() ? '⭕❌ ' : '🔔 ') + (phs === 'q' ? `Q${st.qn} · ⏱ ${left}초 · 제출 ${sub}/${cand.length}` : phs === 'reveal' ? `Q${st.qn} 마감 · 제출 ${sub}/${cand.length}` : phs === 'graded' ? `Q${st.qn} 채점 끝 · ${st.mode === 'elim' ? '도전 중 ' + list.filter(p => p.alive).length + '명' : '점수형'}` : phs === 'end' ? '🏆 게임 종료' : `대기 중 · 접속 ${list.length}명`);
-  const key = phs + '|' + st.qn + '|' + (S.queue ? S.queue.tab + S.queue.idx : '') + '|' + (st.shotLog?.ids?.length || 0) + (T.shotBusy() ? 'b' : '') + Object.keys(S.grade || {}).length;
+  const status = (isOX() ? '⭕❌ ' : '🔔 ') + (phs === 'q' ? `Q${st.qn} · ⏱ ${left}초 · 제출 ${sub}/${cand.length}` : phs === 'reveal' ? `Q${st.qn} 마감 · 제출 ${sub}/${cand.length}` : phs === 'graded' ? `Q${st.qn} 채점 끝 · ${st.mode === 'elim' ? '도전 ' + list.filter(p => p.alive).length + '명' : '점수형'}` : phs === 'end' ? '🏆 게임 종료' : `대기 중 · 접속 ${list.length}명`);
+  const busyShot = T.shotBusy(), busyPres = !!(st.present && !st.present.closed && st.present.qn === st.qn && phs === 'graded');
+  const nx = nextInfo();
+  const key = [phs, st.qn, S.queue ? S.queue.tab + S.queue.idx : '', st.shotLog?.ids?.length || 0, busyShot, busyPres, Object.keys(S.grade || {}).length, nx?.done].join('|');
   if (!force && key === tbarKey) { const s = $('tbar').querySelector('.st'); if (s) s.textContent = status; return; }
   tbarKey = key;
-  let b = `<button data-a="menu">👩‍🏫 메뉴</button><span class="st">${esc(status)}</span>`;
-  if (phs === 'q') b += `<button data-a="plus">⏱ +10초</button><button class="red" data-a="stop">⏹ 지금 마감</button>`;
-  else if (phs === 'reveal') b += isOX() ? '<span class="st">⏳ 자동 채점 중...</span>' : `<button class="gold pulse" data-a="gal">🧑‍⚖️ 채점하기</button>`;
-  else {
-    if (phs === 'graded') b += `<button data-a="gal">🔍 답판 · ✏️ 채점 고치기</button>`;
-    if (phs === 'graded' && st.shotsOn !== false && st.shotMode !== 'auto') { const n = st.shotN || 1, used = n - T.shotsLeft(), can = !T.shotBusy() && T.shotsLeft() > 0 && T.shotPool().length; b += `<button class="${can ? 'gold' : ''}" data-a="shot" ${can ? '' : 'disabled style="opacity:.5"'}>${isOX() ? '🏀 보너스 슛' : '🔔 타종 찬스'} 추첨 (${used}/${n})</button>`; }
-    if (phs === 'graded' && !isOX()) b += `<button data-a="present">🎤 정답 발표 추첨</button>`;
-    const nx = nextInfo(); if (nx) b += nx.done ? `<button disabled style="opacity:.5">🏁 ${esc(nx.name)} 끝</button>` : `<button class="gold" data-a="next">▶ 다음 문제 (${nx.i + 1}/${nx.n})</button>`;
-    if (phs === 'end') b += `<button data-a="rank">🏆 순위 보기</button><button data-a="new">🔄 새 게임</button>`;
-    b += `<button class="gold" data-a="write">✍️ 문제 내기</button><button class="green" data-a="bank">📚 문제 은행</button>`;
-  }
-  const busy = phs === 'q' || phs === 'reveal';
-  b += `<button data-a="rank">📊 지금 순위</button>`;
-  if (phs !== 'end') b += `<button class="red" data-a="end" ${busy ? 'disabled style="opacity:.45" title="문제가 끝난 뒤에 누를 수 있어요"' : ''}>🏆 게임 종료</button>`;
-  $('tbar').innerHTML = b;
+  // ① 지금 단계에 맞는 큰 버튼 하나
+  let pri = '';
+  if (phs === 'q') pri = `<button class="pri red" data-a="stop">⏹ 지금 마감</button>`;
+  else if (phs === 'reveal') pri = isOX() ? `<button class="pri" disabled style="opacity:.6">⏳ 자동 채점 중...</button>` : `<button class="pri pulse" data-a="gal">🧑‍⚖️ 채점하기</button>`;
+  else if (phs === 'end') pri = `<button class="pri" data-a="new">🔄 새 게임</button>`;
+  else if (nx && !nx.done) pri = `<button class="pri" data-a="next">▶ 다음 문제 (${nx.i + 1}/${nx.n})</button>`;
+  else pri = `<button class="pri" data-a="bank">▶ 문제 내기</button>`;
+  let b = `<button class="ico" data-a="menu" title="교사 메뉴">👩‍🏫</button><span class="st">${esc(status)}</span>${pri}`;
+  // ② 이벤트 (채점 뒤) — 진행 중이면 건너뛰기
+  if (busyShot) b += `<button class="skip" data-a="skip">⏭ 건너뛰기</button>`;
+  else if (phs === 'graded') b += `<button data-a="ev">🎉 이벤트 ▾</button>`;
+  // ③ 문제 · 순위 · 더보기
+  if (phs !== 'q' && phs !== 'reveal') b += `<button data-a="prob">📚 문제 ▾</button>`;
+  b += `<button class="ico" data-a="rank" title="지금 순위">📊</button><button class="ico" data-a="more" title="더보기">⋯</button>`;
+  { const tb = $('tbar'); if (tb._h !== b) { tb._h = b; tb.innerHTML = b; } }
+}
+/* 진행 바 팝업 메뉴 */
+function openPop(anchor, items) {
+  const pop = $('pop');
+  pop.innerHTML = items.map((it, i) => it.t ? `<div class="pt">${esc(it.t)}</div>` : `<button data-i="${i}" class="${it.danger ? 'danger' : ''}" ${it.off ? 'disabled' : ''}>${it.label}</button>`).join('');
+  pop.hidden = false;
+  const r = anchor.getBoundingClientRect(), pw = pop.offsetWidth, ph2 = pop.offsetHeight;
+  let x = clamp(r.left + r.width / 2 - pw / 2, 8, innerWidth - pw - 8), y = r.top - ph2 - 8; if (y < 8) y = r.bottom + 8;
+  pop.style.left = x + 'px'; pop.style.top = y + 'px';
+  pop.onclick = e => { const bt = e.target.closest('[data-i]'); if (!bt) return; pop.hidden = true; SND.click(); items[+bt.dataset.i].fn(); };
+}
+addEventListener('pointerdown', e => { if (!$('pop').hidden && !e.target.closest('#pop') && !e.target.closest('[data-a]') && !e.target.closest('#btnMore')) $('pop').hidden = true; }, true);
+function evItems() {
+  const st = S.state, n = st.shotN || 1, used = n - T.shotsLeft(), canShot = st.shotsOn !== false && !T.shotBusy() && T.shotsLeft() > 0 && T.shotPool().length;
+  const it = [{ t: '채점 뒤 이벤트 (안 하면 그냥 다음 문제)' }];
+  if (st.shotsOn !== false) it.push({ label: `${isOX() ? '🏀 보너스 슛' : '🔔 타종 찬스'} 추첨 (${used}/${n})`, off: !canShot, fn: () => T.drawShot() });
+  if (!isOX()) it.push({ label: '🎤 정답 발표 추첨', fn: () => T.drawPresent() });
+  if (it.length === 1) it.push({ label: '⚙️ 이벤트가 꺼져 있어요 (설정 › 재미 요소)', fn: () => openPanel('set') });
+  return it;
+}
+function moreItems() {
+  const st = S.state, phs = st.phase || 'wait', busy = phs === 'q' || phs === 'reveal', proj = document.body.classList.contains('proj');
+  const it = [];
+  if (phs === 'q') it.push({ label: '⏱ 시간 +10초', fn: () => T.addTime(10) });
+  if (st.qn && phs !== 'q') it.push({ label: '🔍 답판 보기 · ✏️ 채점 고치기', fn: openGallery });
+  it.push({ label: proj ? '📽 발표 모드 끄기' : '📽 발표 모드 (칠판 화면 깔끔하게)', fn: () => { document.body.classList.toggle('proj'); toast(document.body.classList.contains('proj') ? '📽 발표 모드 — 진행 바는 화면 아래에 마우스를 올리면 나와요' : '📽 발표 모드를 껐어요'); } });
+  it.push({ label: '👩‍🏫 교사 메뉴', fn: () => openPanel('qr') });
+  if (phs !== 'end') it.push({ label: '🏆 게임 종료 · 순위 발표', danger: true, off: busy, fn: endGameAsk });
+  it.push({ label: '🚪 나가기', fn: () => $('btnLeave').click() });
+  return it;
 }
 async function endGameAsk() {
   if (['q', 'reveal'].includes(ph())) return toast('문제가 끝난 뒤에 누를 수 있어요');
@@ -2881,7 +3015,11 @@ async function endGameAsk() {
 }
 $('tbar').onclick = e => {
   const a = e.target.closest('button')?.dataset.a; if (!a) return; SND.click();
-  ({ menu: () => openPanel('qr'), plus: () => T.addTime(10), stop: () => T.closeNow(), gal: openGallery, write: () => openPanel('write'), bank: () => openPanel('bank'), rank: () => showRanking(), new: () => T.newGame(), next: askNext, shot: () => T.drawShot(), present: () => T.drawPresent(), end: endGameAsk })[a]?.();
+  const btn = e.target.closest('button');
+  ({ menu: () => openPanel('qr'), plus: () => T.addTime(10), stop: () => T.closeNow(), gal: openGallery, write: () => openPanel('write'), bank: () => openPanel('bank'), rank: () => showRanking(), new: () => T.newGame(), next: askNext, shot: () => T.drawShot(), present: () => T.drawPresent(), end: endGameAsk,
+     skip: () => T.skipShot(), ev: () => openPop(btn, evItems()),
+     prob: () => openPop(btn, [{ t: '문제' }, { label: '📚 문제 은행에서 고르기', fn: () => openPanel('bank') }, { label: '✍️ 직접 써서 내기', fn: () => openPanel('write') }, { label: '🗂 문제 세트 관리', fn: () => openPanel('mine') }]),
+     more: () => openPop(btn, moreItems()) })[a]?.();
 };
 
 /* =========================================================
@@ -2901,11 +3039,14 @@ async function askNext() {
 }
 function openPanel(tab) {
   $('tpanel').hidden = false;
-  document.querySelectorAll('.tnav .tab').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
+  const prob = ['bank', 'write', 'mine'].includes(tab);   // 📚 문제 탭 안의 하위 탭
+  document.querySelectorAll('.tnav .tab').forEach(b => b.classList.toggle('on', b.dataset.t === (prob ? 'bank' : tab)));
+  $('probTabs').hidden = !prob; [...$('probTabs').children].forEach(b => b.classList.toggle('on', b.dataset.t === tab));
   document.querySelectorAll('.tbody section').forEach(s => s.hidden = s.dataset.p !== tab);
   if (tab === 'qr') renderQR(); if (tab === 'bank') renderBank(); if (tab === 'mine') renderSets(); if (tab === 'stu') renderStu(); if (tab === 'play' || tab === 'set') renderTStat();
 }
 document.querySelectorAll('.tnav .tab').forEach(b => b.onclick = () => { SND.click(); openPanel(b.dataset.t); });
+$('probTabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { SND.click(); openPanel(b.dataset.t); } };
 $('tClose').onclick = () => $('tpanel').hidden = true;
 function studentLink() {
   const u = new URL(location.href); u.search = ''; u.hash = ''; u.searchParams.set('room', S.room);
@@ -3099,6 +3240,10 @@ $('titleGo').onclick = () => { T.setTitle($('titleIn').value); toast('🏫 현�
 $('themeSeg').onclick = e => { const b = e.target.closest('[data-th]'); if (b) T.setTheme(b.dataset.th); };
 $('tLookOpen').onclick = () => { $('tpanel').hidden = true; moveLook('M'); $('lookModal').hidden = false; setView('stage'); camAnim.tp.set(4.6, 3.4, -6.5); camAnim.tt.set(4.6, 2.2, -12.3); };
 $('lookClose').onclick = () => { $('lookModal').hidden = true; setView('stage'); toast('👩‍🏫 무대 위 캐릭터를 바꿨어요'); };
+$('btnMore').onclick = e => {
+  if (S.isTeacher) return openPop(e.currentTarget, moreItems());
+  openPop(e.currentTarget, [{ label: '🪑 내 자리로', off: !meP()?.alive && S.state.mode === 'elim', fn: goToSeat }, { label: '🚪 나가기', danger: true, fn: () => $('btnLeave').click() }]);
+};
 $('btnRoster').onclick = () => document.body.classList.toggle('showRoster');
 $('btnSnd').textContent = SND.on ? '🔊' : '🔇';
 $('btnSnd').onclick = () => { SND.on = !SND.on; localStorage.setItem('gb_snd', SND.on ? '1' : '0'); $('btnSnd').textContent = SND.on ? '🔊' : '🔇'; SND.init(); };
