@@ -97,7 +97,9 @@ body.phone .oxb{width:84px;height:84px;font-size:44px}
 #hypeBtn small{font-size:11px;font-weight:800}#hypeBtn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
 body.phone #hypeBtn{bottom:auto;top:46%;left:8px}
 #presentUI .cm-card{width:min(760px,100%)}#presentUI img{width:100%;border:4px solid var(--ink);border-radius:14px;background:#fff;margin-top:8px}
-#tools{position:fixed;right:10px;top:38%;z-index:9;display:flex;flex-direction:column;gap:8px}
+#tools{position:fixed;right:10px;top:34%;z-index:9;display:flex;flex-direction:column;gap:22px}
+#tools .iconbtn{position:relative}#tools .iconbtn[hidden]{display:none}
+#tools .iconbtn::after{content:attr(data-l);position:absolute;top:calc(100% + 1px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px;font-weight:900;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000,0 1px 2px #000;pointer-events:none}
 #tools .iconbtn.on{background:var(--gold)}
 #qbar{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:11;width:max-content;max-width:min(860px,calc(100% - 20px));display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:18px;padding:10px 14px;border:3px solid var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.35)}
 #ansCard{position:fixed;left:50%;top:78px;transform:translateX(-50%);z-index:11;width:max-content;max-width:min(760px,calc(100% - 20px));background:var(--panel);border:3px solid var(--ok);border-radius:16px;padding:10px 16px;box-shadow:0 8px 22px rgba(0,0,0,.3);animation:tin .3s ease}
@@ -375,7 +377,7 @@ body.proj #projTip{display:block}
   </div>
 </div>
 
-<div id="tools" hidden><button class="iconbtn" id="btnView" title="시점 바꾸기">🎥</button><button class="iconbtn" id="btnLite" title="가벼운 화면">⚡</button><button class="iconbtn" id="btnChat" title="채팅" hidden>💬<span id="chatBadge" hidden></span></button></div>
+<div id="tools" hidden><button class="iconbtn" id="btnFind" title="나 찾기" data-l="나 찾기" hidden>📍</button><button class="iconbtn" id="btnView" title="시점 바꾸기" data-l="시점">🎥</button><button class="iconbtn" id="btnLite" title="가벼운 화면" data-l="가볍게">⚡</button><button class="iconbtn" id="btnChat" title="채팅" data-l="채팅" hidden>💬<span id="chatBadge" hidden></span></button></div>
 <div id="hud" hidden><span id="hudRoom"></span><span class="hsep"></span><span id="hudMe"></span><button class="hb" id="btnRoster" title="명단">👥</button><button class="hb" id="btnSnd" title="소리">🔊</button><button class="hb" id="btnMore" title="더보기">⋯</button><button id="btnLeave" hidden></button></div>
 <div id="pop" hidden></div>
 <div id="projTip">📽 발표 모드 · 화면 아래에 마우스를 올리면 진행 바가 나와요</div>
@@ -1747,7 +1749,7 @@ function animTeacher(dt, t) {
 function setLabel(a, text, me) {
   if (a.labelText === text) return; a.labelText = text;
   if (a.label) a.root.remove(a.label);
-  a.label = textSprite(text, { bg: me ? 'rgba(242,183,5,.95)' : 'rgba(30,27,24,.8)', color: me ? '#1e1b18' : '#fff' }); a.label.position.y = 2.42; a.root.add(a.label);
+  a.label = textSprite(text, me ? { bg: 'rgba(242,183,5,.98)', color: '#1e1b18', h: .58 } : { bg: 'rgba(30,27,24,.8)', color: '#fff' }); a.label.position.y = me ? 2.5 : 2.42; a.root.add(a.label);
 }
 function setMark(a, m) {
   if (a.markV === m) return; const was = a.markV; a.markV = m;
@@ -2149,6 +2151,25 @@ const VIEWS = {
   teacher: [['stage', '🎬 무대·전광판 정면'], ['students', '🙋 학생들 보기 (답판 정면)'], ['top', '🔭 강당 전체 보기']],
 };
 let VIEW = 'stage', camAnim = null;
+/* 📍 내 캐릭터 표시 : 머리 위 '▼ 나' + 발밑 노란 링 (내 화면에서만 보여요) */
+const meArrow = textSprite('▼ 나', { bg: 'rgba(242,183,5,.98)', color: '#1e1b18', h: .6 }); meArrow.visible = false; scene.add(meArrow);
+const meRingM = new THREE.MeshBasicMaterial({ color: '#f2b705', transparent: true, opacity: .85, depthWrite: false });
+const meRing = new THREE.Mesh(new THREE.RingGeometry(.62, .82, 36), meRingM); meRing.rotation.x = -Math.PI / 2; meRing.visible = false; scene.add(meRing);
+let findT = 0;
+function updateMeMark(t, dt) {
+  const a = !S.isTeacher && AV[S.me]; const on = !!(a && a.root.visible !== false);
+  meArrow.visible = meRing.visible = on; if (!on) return;
+  const p = a.root.position, big = findT > 0 ? 1.25 : 1;
+  meArrow.position.set(p.x, p.y + 3.25 + Math.abs(Math.sin(t * 3.2)) * .25, p.z); meArrow.scale.setScalar(big);
+  meRing.position.set(p.x, p.y + .06, p.z); const s = (1 + Math.sin(t * 4) * .08) * big; meRing.scale.set(s, s, s);
+  meRingM.opacity = findT > 0 ? .6 + .4 * Math.abs(Math.sin(t * 12)) : .85;
+  if (findT > 0) { findT -= dt; if (findT <= 0) setView('me'); }
+}
+function findMe() {
+  const a = AV[S.me]; if (!a) return false; const c = a.root.position;
+  VIEW = 'find'; camAnim = { fp: camera.position.clone(), ft: controls.target.clone(), tp: new THREE.Vector3(c.x, c.y + 4.6, c.z + 8.2), tt: new THREE.Vector3(c.x, c.y + 1.2, c.z - 1), k: 0 };
+  findT = 2.6; a.emote = 1; a.emoteT = 2; emitStars(c); showBubble(a, '🙋'); return true;
+}
 function viewPose(v) {
   if (v === 'stage') return isOX() ? { p: [0, 12.5, 22.5], t: [0, 4.6, -5] } : { p: [0, 7.4, 12.6], t: [0, 3.9, -9] };
   if (v === 'students') return isOX() ? { p: [0, 9, -16], t: [0, 0, 2.5] } : { p: [0, 8.5, -13.5], t: [0, .6, -1] };
@@ -2159,7 +2180,7 @@ function viewPose(v) {
   const m = AV[S.me], c = m ? m.cur : { x: 0, y: 0, z: 0 }, tg = [lerp(c.x, 0, meX()), 2.4, Math.max(c.z - 4.5, -7.5)];
   const k = meK(); return { p: [tg[0], tg[1] + 3.6 * k, tg[2] + 10.5 * k], t: tg };
 }
-const meX = () => innerWidth < innerHeight ? .6 : .35;   // 세로 화면은 전광판 가운데 쪽을 더 많이 봐요
+const meX = () => innerWidth < innerHeight ? .2 : .3;   // 내 캐릭터가 화면 안에 꼭 들어오게   // 세로 화면은 전광판 가운데 쪽을 더 많이 봐요
 const meK = () => clamp(1.25 / (innerWidth / innerHeight), 1, 1.7);   // 세로 휴대폰은 조금 더 뒤에서 봐요
 function setView(v, instant) {
   VIEW = v; const pose = viewPose(v);
@@ -2289,7 +2310,7 @@ function loop() {
   if (S.joined) {
     if (!S.isTeacher) updateMe(dt);
     for (const p of onlineList()) { const a = AV[p.id]; if (a) { animAvatar(a, p, dt, t); crownFor(a, WIN.has(p.id), t); finalBeam(a, !!S.state.final && p.alive && ph() !== 'end'); if (a.say) { a.sayT -= dt; if (a.sayT <= 0) { a.root.remove(a.say); a.say = null; } } if (a.cloud) { a.cloudT -= dt; a.cloud.position.y = 3.05 + Math.sin(t * 4) * .06; if (a.cloudT <= 0) { a.root.remove(a.cloud); a.cloud = null; } } } }
-    applyScene(); setCourtFlip(S.state.flip); updateBalls(dt); oxLoopFX(t); updateRoulette(); updateShow(dt, t); updateHype(dt);
+    applyScene(); setCourtFlip(S.state.flip); updateBalls(dt); oxLoopFX(t); updateRoulette(); updateShow(dt, t); updateHype(dt); updateMeMark(t, dt);
     animTeacher(dt, t); if (TA.say) { TA.sayT -= dt; if (TA.sayT <= 0) { TA.root.remove(TA.say); TA.say = null; } }
     const mine = AV[S.me];
     if (camAnim) {   // 시점 바꿀 때 부드럽게 이동
@@ -2485,7 +2506,7 @@ function enterGame() {
   $('hudMe').textContent = S.isTeacher ? '👩‍🏫 선생님' : '🙋 ' + $('inName').value.trim();
   controls.enablePan = S.isTeacher;
   if (S.isTeacher) { try { S.curQ = JSON.parse(localStorage.getItem('gb_curq:' + S.room) || 'null'); } catch (e) {} $('tbar').hidden = false; setView('stage', true); openPanel('qr'); }
-  else { $('hint').hidden = isPhone(); $('seatBtn').hidden = false; $('emoteBar').hidden = false; setTimeout(() => setView('me', true), 50); }
+  else { $('hint').hidden = isPhone(); $('seatBtn').hidden = false; $('emoteBar').hidden = false; $('btnFind').hidden = false; setTimeout(() => setView('me', true), 50); setTimeout(() => findMe(), 900); }
   $('emoteBar').innerHTML = EMOTES.map(([e, n], i) => `<button data-e="${i + 1}" title="${n}">${e}<span>${i + 1}</span></button>`).join('');
   $('seatBtn').onclick = () => { SND.click(); goToSeat(); };
   $('emoteBar').onclick = e => { const b = e.target.closest('button'); if (b) doEmote(+b.dataset.e); };
@@ -3214,6 +3235,7 @@ $('botDel').onclick = () => Bots.remove();
 /* =========================================================
    공통 버튼 · 나가기
    ========================================================= */
+$('btnFind').onclick = () => { SND.click(); if (findMe()) toast('📍 여기 있어요! 머리 위 ▼ 나 표시가 내 캐릭터예요'); };
 $('btnView').onclick = () => { SND.click(); const v = cycleView(); toast('🎥 ' + v[1]); };
 $('btnLite').onclick = () => { SND.click(); setLite(!LITE); $('btnLite').classList.toggle('on', LITE); toast(LITE ? '⚡ 가벼운 화면 켬 — 그림자·외곽선·조명 효과를 줄였어요' : '✨ 기본 화면으로 돌아왔어요'); };
 $('titleGo').onclick = () => { T.setTitle($('titleIn').value); toast('🏫 현수막을 바꿨어요'); };
